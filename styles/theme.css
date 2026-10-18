@@ -1,0 +1,99 @@
+/* ==========================================================================
+   VTOP Modern - Core Theme Variables & Base Styles
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --vtop-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --vtop-font-mono: 'JetBrains Mono', monospace;
+
+  /* Modern Dark Palette (Default) */
+  --vtop-bg: #090d16;
+  --vtop-bg-subtle: #0f172a;
+  --vtop-surface: #131b2e;
+  --vtop-surface-elevated: #1e293b;
+  --vtop-surface-hover: #26354d;
+  --vtop-border: rgba(255, 255, 255, 0.08);
+  --vtop-border-focus: rgba(99, 102, 241, 0.5);
+
+  --vtop-text-primary: #f8fafc;
+  --vtop-text-secondary: #94a3b8;
+  --vtop-text-muted: #64748b;
+
+  /* Accents */
+  --vtop-primary: #6366f1;
+  --vtop-primary-hover: #4f46e5;
+  --vtop-primary-light: rgba(99, 102, 241, 0.15);
+  
+  --vtop-secondary: #06b6d4;
+  --vtop-gradient-hero: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+  --vtop-gradient-card: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(19, 27, 46, 0.9) 100%);
+  --vtop-glass-bg: rgba(19, 27, 46, 0.75);
+  --vtop-glass-border: rgba(255, 255, 255, 0.12);
+
+  /* Status Colors */
+  --vtop-success: #10b981;
+  --vtop-success-bg: rgba(16, 185, 129, 0.15);
+  --vtop-warning: #f59e0b;
+  --vtop-warning-bg: rgba(245, 158, 11, 0.15);
+  --vtop-danger: #ef4444;
+  --vtop-danger-bg: rgba(239, 68, 68, 0.15);
+  --vtop-info: #38bdf8;
+  --vtop-info-bg: rgba(56, 189, 248, 0.15);
+
+  --vtop-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --vtop-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.4);
+  --vtop-shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.15);
+
+  --vtop-radius-sm: 8px;
+  --vtop-radius: 14px;
+  --vtop-radius-lg: 20px;
+}
+
+/* Light Theme Variant */
+html[data-vtop-theme="light"] {
+  --vtop-bg: #f8fafc;
+  --vtop-bg-subtle: #f1f5f9;
+  --vtop-surface: #ffffff;
+  --vtop-surface-elevated: #ffffff;
+  --vtop-surface-hover: #f1f5f9;
+  --vtop-border: rgba(0, 0, 0, 0.08);
+  --vtop-border-focus: rgba(99, 102, 241, 0.4);
+
+  --vtop-text-primary: #0f172a;
+  --vtop-text-secondary: #475569;
+  --vtop-text-muted: #94a3b8;
+
+  --vtop-glass-bg: rgba(255, 255, 255, 0.85);
+  --vtop-glass-border: rgba(0, 0, 0, 0.08);
+
+  --vtop-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --vtop-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.08);
+  --vtop-shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.12);
+}
+
+/* Base resets & typography */
+html, body {
+  font-family: var(--vtop-font) !important;
+  background-color: var(--vtop-bg) !important;
+  color: var(--vtop-text-primary) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--vtop-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--vtop-surface-hover);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vtop-primary);
+}
