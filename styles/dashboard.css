@@ -1,0 +1,242 @@
+/* ==========================================================================
+   VTOP Modern - Internal Dashboard, Menus, Tables, Cards & Widgets
+   ========================================================================== */
+
+/* Main Containers & Layout */
+#page-wrapper, .page-wrapper, #main-content, .main-container, .content-wrapper {
+  background-color: var(--vtop-bg) !important;
+  color: var(--vtop-text-primary) !important;
+  padding: 1.5rem !important;
+  min-height: 90vh;
+}
+
+/* Internal Top Navbar */
+.navbar-default, .main-header, header.navbar, .navbar-static-top {
+  background: var(--vtop-surface) !important;
+  border-bottom: 1px solid var(--vtop-border) !important;
+  box-shadow: var(--vtop-shadow-sm) !important;
+}
+
+.navbar-brand, .navbar-nav > li > a {
+  color: var(--vtop-text-primary) !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.navbar-nav > li > a:hover {
+  color: var(--vtop-primary) !important;
+}
+
+/* Sidebar Menu */
+.sidebar, .navbar-default.sidebar, .left-side, aside.main-sidebar, #sidebar-menu {
+  background-color: var(--vtop-surface) !important;
+  border-right: 1px solid var(--vtop-border) !important;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.sidebar ul li a, .nav-second-level li a {
+  color: var(--vtop-text-secondary) !important;
+  border-radius: var(--vtop-radius-sm);
+  margin: 3px 8px;
+  padding: 10px 14px !important;
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar ul li a:hover, .sidebar ul li.active > a {
+  background: var(--vtop-primary-light) !important;
+  color: var(--vtop-primary) !important;
+  transform: translateX(4px);
+}
+
+.sidebar ul li a i {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+/* Cards & Panels Overhaul */
+.panel, .panel-default, .card {
+  background: var(--vtop-surface) !important;
+  border: 1px solid var(--vtop-border) !important;
+  border-radius: var(--vtop-radius) !important;
+  box-shadow: var(--vtop-shadow) !important;
+  margin-bottom: 1.5rem !important;
+  overflow: hidden;
+}
+
+.panel-heading, .card-header {
+  background: var(--vtop-surface-elevated) !important;
+  border-bottom: 1px solid var(--vtop-border) !important;
+  color: var(--vtop-text-primary) !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  padding: 1rem 1.25rem !important;
+}
+
+.panel-body, .card-body {
+  background: var(--vtop-surface) !important;
+  color: var(--vtop-text-primary) !important;
+  padding: 1.25rem !important;
+}
+
+.panel-footer, .card-footer {
+  background: var(--vtop-surface-elevated) !important;
+  border-top: 1px solid var(--vtop-border) !important;
+  color: var(--vtop-text-muted) !important;
+}
+
+/* ==========================================================================
+   Modern Tables (Attendance, Marks, Curriculum, Exam)
+   ========================================================================== */
+
+table, .table {
+  color: var(--vtop-text-primary) !important;
+  background-color: var(--vtop-surface) !important;
+  border: 1px solid var(--vtop-border) !important;
+  border-radius: var(--vtop-radius);
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: hidden;
+  box-shadow: var(--vtop-shadow-sm);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.table > thead > tr > th, table th {
+  background-color: var(--vtop-surface-elevated) !important;
+  color: var(--vtop-text-primary) !important;
+  font-weight: 600 !important;
+  font-size: 0.825rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 12px 14px !important;
+  border-top: none !important;
+  border-bottom: 2px solid var(--vtop-border) !important;
+  border-left: none !important;
+  border-right: none !important;
+  white-space: nowrap;
+}
+
+.table > tbody > tr > td, table td {
+  padding: 12px 14px !important;
+  border-top: 1px solid var(--vtop-border) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  color: var(--vtop-text-secondary) !important;
+  font-size: 0.92rem;
+  vertical-align: middle !important;
+  transition: background-color 0.15s ease;
+}
+
+.table > tbody > tr:hover td, table tr:hover td {
+  background-color: var(--vtop-surface-hover) !important;
+  color: var(--vtop-text-primary) !important;
+}
+
+/* Badges & Chips */
+.badge, .label {
+  padding: 6px 12px !important;
+  border-radius: 9999px !important;
+  font-weight: 600 !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.02em;
+}
+
+.badge-success, .label-success {
+  background-color: var(--vtop-success-bg) !important;
+  color: var(--vtop-success) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.badge-warning, .label-warning {
+  background-color: var(--vtop-warning-bg) !important;
+  color: var(--vtop-warning) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+.badge-danger, .label-danger {
+  background-color: var(--vtop-danger-bg) !important;
+  color: var(--vtop-danger) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+/* CGPA Privacy Blur */
+.vtop-cgpa-blur {
+  filter: blur(8px) !important;
+  cursor: pointer;
+  user-select: none;
+  transition: filter 0.25s ease;
+}
+.vtop-cgpa-blur:hover {
+  filter: blur(2px) !important;
+}
+.vtop-cgpa-revealed {
+  filter: none !important;
+}
+
+/* Timetable Enhancements */
+.vtop-today-highlight {
+  background: rgba(99, 102, 241, 0.12) !important;
+  border-left: 3px solid var(--vtop-primary) !important;
+}
+
+.vtop-current-class-highlight {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(6, 182, 212, 0.25)) !important;
+  border: 2px solid var(--vtop-primary) !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4) !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  border-radius: var(--vtop-radius-sm);
+  animation: pulseSlot 3s infinite alternate;
+}
+
+@keyframes pulseSlot {
+  0% { box-shadow: 0 0 8px rgba(99, 102, 241, 0.3); }
+  100% { box-shadow: 0 0 18px rgba(99, 102, 241, 0.6); }
+}
+
+/* Floating Quick Action Bar in Dashboard */
+.vtop-floating-dock {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--vtop-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--vtop-glass-border);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  box-shadow: var(--vtop-shadow-lg);
+  z-index: 999999;
+}
+
+.vtop-dock-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--vtop-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vtop-dock-btn:hover {
+  background: var(--vtop-surface-hover);
+  color: var(--vtop-text-primary);
+  transform: translateY(-1px);
+}
+
+.vtop-dock-btn.active {
+  background: var(--vtop-primary);
+  color: #ffffff;
+}
