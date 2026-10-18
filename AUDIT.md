@@ -24,17 +24,17 @@ runtime behavior against live VTOP remain unverified.
 
 ## Actual architecture and feature map
 
-| Area | Entry point and behavior | Classification |
-| --- | --- | --- |
-| Content bootstrap | `manifest.json` loads seven ordered scripts at `document_start` on all configured hosts. | Partially working; relies on script order and runs unrelated features on every page. |
-| Popup | `popup/popup.html` and `popup/popup.js` read sync preferences and a local attendance summary. | Partially working; switches write settings but `attendanceCalc` and `autoFocus` are not consumed by feature code. |
-| Preferences | `storage.sync` plus page `localStorage` theme state. | Heuristic and inconsistent; popup uses `data-theme`, portal pages use `data-vtop-theme`. |
-| Attendance | `scripts/attendance.js` detects headers heuristically, appends a quota column/card, and writes a local summary. | Partially working; math is sound for valid integer units, but parsing and permanent processed flags are unsafe for dynamic updates. |
-| Privacy | `scripts/content.js` applies blur classes to broad text/table matches and adds click/keyboard reveal. | Heuristic and best-effort; broad scans, CSS-only masking, and mismatched storage event names. |
-| Timetable | `scripts/timetable.js` detects generic theory/lab tables and copies today's non-empty cells. | Heuristic; actual structure, times, rooms, and chronological semantics are unknown until live verification. |
-| Command palette | `scripts/command-palette.js` searches commands and guesses visible links/hrefs. | Partially working; keyboard flow exists, but empty-result modulo, extra modifiers, unsafe HTML, and unsupported destinations remain. |
-| Login helper | `scripts/login-helper.js` targets known IDs/names, uppercases username, focuses fields, and submits the student form. | Partially working; selectors and pre-login context are unverified; direct `form.submit()` can bypass browser submit behavior. |
-| Theme | `scripts/theme-manager.js` applies an early local theme and syncs later. | Partially working; multiple sources of truth and remote font imports conflict with local-only claims. |
+| Area              | Entry point and behavior                                                                                              | Classification                                                                                                                       |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Content bootstrap | `manifest.json` loads seven ordered scripts at `document_start` on all configured hosts.                              | Partially working; relies on script order and runs unrelated features on every page.                                                 |
+| Popup             | `popup/popup.html` and `popup/popup.js` read sync preferences and a local attendance summary.                         | Partially working; switches write settings but `attendanceCalc` and `autoFocus` are not consumed by feature code.                    |
+| Preferences       | `storage.sync` plus page `localStorage` theme state.                                                                  | Heuristic and inconsistent; popup uses `data-theme`, portal pages use `data-vtop-theme`.                                             |
+| Attendance        | `scripts/attendance.js` detects headers heuristically, appends a quota column/card, and writes a local summary.       | Partially working; math is sound for valid integer units, but parsing and permanent processed flags are unsafe for dynamic updates.  |
+| Privacy           | `scripts/content.js` applies blur classes to broad text/table matches and adds click/keyboard reveal.                 | Heuristic and best-effort; broad scans, CSS-only masking, and mismatched storage event names.                                        |
+| Timetable         | `scripts/timetable.js` detects generic theory/lab tables and copies today's non-empty cells.                          | Heuristic; actual structure, times, rooms, and chronological semantics are unknown until live verification.                          |
+| Command palette   | `scripts/command-palette.js` searches commands and guesses visible links/hrefs.                                       | Partially working; keyboard flow exists, but empty-result modulo, extra modifiers, unsafe HTML, and unsupported destinations remain. |
+| Login helper      | `scripts/login-helper.js` targets known IDs/names, uppercases username, focuses fields, and submits the student form. | Partially working; selectors and pre-login context are unverified; direct `form.submit()` can bypass browser submit behavior.        |
+| Theme             | `scripts/theme-manager.js` applies an early local theme and syncs later.                                              | Partially working; multiple sources of truth and remote font imports conflict with local-only claims.                                |
 
 ## Confirmed root causes and risks
 

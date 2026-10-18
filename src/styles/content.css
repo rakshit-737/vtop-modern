@@ -1,0 +1,40 @@
+.vtop-privacy-shielded {
+  filter: blur(7px);
+  user-select: none !important;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: filter 120ms ease;
+}
+
+.vtop-privacy-shielded:hover {
+  filter: blur(4px);
+}
+
+.vtop-privacy-shielded.revealed {
+  filter: none;
+  user-select: text !important;
+}
+
+.vtop-privacy-shielded:focus-visible {
+  outline: 2px solid #6d5dfc;
+  outline-offset: 2px;
+}
+
+.vtop-modern-today {
+  outline: 2px solid color-mix(in srgb, #6d5dfc 50%, transparent);
+  outline-offset: -2px;
+}
+
+html[data-vtop-theme='dark'] {
+  color-scheme: dark;
+}
+
+html[data-vtop-theme='light'] {
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vtop-privacy-shielded {
+    transition: none;
+  }
+}

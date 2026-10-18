@@ -2,3 +2,7 @@
 *.zip
 Thumbs.db
 node_modules/
+.output/
+.wxt/
+coverage/
+*.log
