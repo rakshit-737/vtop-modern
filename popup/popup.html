@@ -2,92 +2,105 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VTOP Modern</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="popup-container">
+  <div class="popup-wrapper">
     <!-- Header -->
-    <div class="popup-header">
-      <div class="brand">
-        <img src="../icons/icon32.png" alt="VTOP Modern Logo" class="brand-logo">
-        <div>
-          <h1 class="brand-title">VTOP Modern</h1>
-          <span class="brand-sub">VIT Portal Supercharged</span>
+    <header class="popup-header">
+      <div class="header-brand">
+        <div class="brand-monogram" aria-hidden="true">V</div>
+        <div class="brand-text">
+          <span class="brand-name">VTOP Modern</span>
+          <span class="brand-tag">Academic Companion</span>
         </div>
       </div>
-      <span class="version-tag">v1.0</span>
-    </div>
-
-    <!-- Toggles Section -->
-    <div class="section-title">PREFERENCES</div>
-    <div class="settings-list">
-      <div class="setting-item">
-        <div class="setting-info">
-          <span class="setting-label">Dark Theme</span>
-          <span class="setting-desc">Modern sleek midnight styling</span>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="themeToggle" checked>
-          <span class="slider"></span>
-        </label>
+      <div class="header-actions">
+        <button type="button" class="icon-btn" id="themeQuickToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg class="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg class="theme-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
       </div>
+    </header>
 
-      <div class="setting-item">
-        <div class="setting-info">
-          <span class="setting-label">Attendance Calculator</span>
-          <span class="setting-desc">Bunk quota & 75% margin targets</span>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="attendanceToggle" checked>
-          <span class="slider"></span>
-        </label>
+    <!-- Academic Overview Section -->
+    <section class="section-container" id="academicSection">
+      <div class="section-label">ACADEMIC STANDING</div>
+      <div id="academicContainer" class="academic-container">
+        <!-- Rendered dynamically by popup.js -->
+        <div class="academic-loading">Loading stats...</div>
       </div>
+    </section>
 
-      <div class="setting-item">
-        <div class="setting-info">
-          <span class="setting-label">Grade Privacy Shield</span>
-          <span class="setting-desc">Blur CGPA/Marks from onlookers</span>
+    <!-- Feature Controls -->
+    <section class="section-container">
+      <div class="section-label">PREFERENCES</div>
+      <div class="control-list">
+        <!-- Attendance Calculator -->
+        <div class="control-row">
+          <div class="control-info">
+            <span class="control-title">Attendance Calculator</span>
+            <span class="control-desc">Calculate 75% bunk buffer & recovery</span>
+          </div>
+          <button type="button" role="switch" aria-checked="true" class="switch-btn" id="attendanceToggle">
+            <span class="switch-thumb"></span>
+          </button>
         </div>
-        <label class="switch">
-          <input type="checkbox" id="privacyToggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
 
-      <div class="setting-item">
-        <div class="setting-info">
-          <span class="setting-label">Quick Login Autofocus</span>
-          <span class="setting-desc">Auto-focus fields & uppercase Reg No</span>
+        <!-- Academic Privacy Shield -->
+        <div class="control-row">
+          <div class="control-info">
+            <span class="control-title">Academic Privacy Shield</span>
+            <span class="control-desc">Conceal CGPA and marks from onlookers</span>
+          </div>
+          <button type="button" role="switch" aria-checked="true" class="switch-btn" id="privacyToggle">
+            <span class="switch-thumb"></span>
+          </button>
         </div>
-        <label class="switch">
-          <input type="checkbox" id="autofocusToggle" checked>
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
 
-    <!-- Quick Links -->
-    <div class="section-title">QUICK ACCESS</div>
-    <div class="quick-links">
-      <a href="https://vtopcc.vit.ac.in/vtop/open/page" target="_blank" class="quick-btn">
-        <span>🏛️</span> VTOP CC
-      </a>
-      <a href="https://vtop.vit.ac.in/vtop/open/page" target="_blank" class="quick-btn">
-        <span>🏫</span> VTOP Vellore
-      </a>
-      <a href="https://outlook.office.com" target="_blank" class="quick-btn">
-        <span>✉️</span> VIT Mail
-      </a>
-      <a href="https://lms.vit.ac.in" target="_blank" class="quick-btn">
-        <span>📚</span> Moodle LMS
-      </a>
-    </div>
+        <!-- Login Autofocus -->
+        <div class="control-row">
+          <div class="control-info">
+            <span class="control-title">Quick Authentication</span>
+            <span class="control-desc">Autofocus inputs & uppercase Reg No</span>
+          </div>
+          <button type="button" role="switch" aria-checked="true" class="switch-btn" id="autofocusToggle">
+            <span class="switch-thumb"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Student Hub Quick Access -->
+    <section class="section-container">
+      <div class="section-label">STUDENT ACCESS</div>
+      <div class="quick-grid">
+        <a href="https://vtopcc.vit.ac.in/vtop/open/page" target="_blank" rel="noopener" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>VTOP CC</span>
+        </a>
+        <a href="https://vtop.vit.ac.in/vtop/open/page" target="_blank" rel="noopener" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+          <span>VTOP Vellore</span>
+        </a>
+        <a href="https://outlook.office.com" target="_blank" rel="noopener" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span>VIT Mail</span>
+        </a>
+        <a href="https://lms.vit.ac.in" target="_blank" rel="noopener" class="quick-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>Moodle LMS</span>
+        </a>
+      </div>
+    </section>
 
     <!-- Footer -->
-    <div class="popup-footer">
-      <span>Built for VIT Students • 100% Private</span>
-    </div>
+    <footer class="popup-footer">
+      <div class="footer-hint">Press <kbd>Ctrl+K</kbd> anywhere on VTOP for Command Palette</div>
+      <div class="footer-status">100% Client-Side • Zero Telemetry</div>
+    </footer>
   </div>
 
   <script src="popup.js"></script>
