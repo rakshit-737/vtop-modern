@@ -1,67 +1,60 @@
 /* ==========================================================================
-   VTOP Modern - Internal Dashboard, Menus, Tables, Cards & Widgets
+   VTOP Modern - Internal Dashboard, Menus, Tables & Privacy Shield
    ========================================================================== */
 
-/* Main Containers & Layout */
+/* Main Containers */
 #page-wrapper, .page-wrapper, #main-content, .main-container, .content-wrapper {
   background-color: var(--vtop-bg) !important;
   color: var(--vtop-text-primary) !important;
-  padding: 1.5rem !important;
+  padding: 1.25rem !important;
   min-height: 90vh;
 }
 
-/* Internal Top Navbar */
+/* Navbar */
 .navbar-default, .main-header, header.navbar, .navbar-static-top {
   background: var(--vtop-surface) !important;
   border-bottom: 1px solid var(--vtop-border) !important;
-  box-shadow: var(--vtop-shadow-sm) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
 }
 
 .navbar-brand, .navbar-nav > li > a {
   color: var(--vtop-text-primary) !important;
   font-weight: 500;
-  transition: color 0.2s ease;
+  font-size: 0.88rem;
 }
 
 .navbar-nav > li > a:hover {
-  color: var(--vtop-primary) !important;
+  color: var(--vtop-accent) !important;
 }
 
 /* Sidebar Menu */
 .sidebar, .navbar-default.sidebar, .left-side, aside.main-sidebar, #sidebar-menu {
   background-color: var(--vtop-surface) !important;
   border-right: 1px solid var(--vtop-border) !important;
-  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.15) !important;
 }
 
 .sidebar ul li a, .nav-second-level li a {
   color: var(--vtop-text-secondary) !important;
-  border-radius: var(--vtop-radius-sm);
-  margin: 3px 8px;
-  padding: 10px 14px !important;
+  border-radius: var(--vtop-radius-xs);
+  margin: 2px 6px;
+  padding: 8px 12px !important;
   font-weight: 500;
-  font-size: 0.92rem;
-  transition: all 0.2s ease;
+  font-size: 0.86rem;
+  transition: all 0.12s ease;
 }
 
 .sidebar ul li a:hover, .sidebar ul li.active > a {
-  background: var(--vtop-primary-light) !important;
-  color: var(--vtop-primary) !important;
-  transform: translateX(4px);
+  background: var(--vtop-surface-hover) !important;
+  color: var(--vtop-text-primary) !important;
 }
 
-.sidebar ul li a i {
-  margin-right: 10px;
-  font-size: 1.1rem;
-}
-
-/* Cards & Panels Overhaul */
+/* Panels & Cards */
 .panel, .panel-default, .card {
   background: var(--vtop-surface) !important;
   border: 1px solid var(--vtop-border) !important;
-  border-radius: var(--vtop-radius) !important;
-  box-shadow: var(--vtop-shadow) !important;
-  margin-bottom: 1.5rem !important;
+  border-radius: var(--vtop-radius-md) !important;
+  box-shadow: var(--vtop-shadow-card) !important;
+  margin-bottom: 1.25rem !important;
   overflow: hidden;
 }
 
@@ -69,174 +62,231 @@
   background: var(--vtop-surface-elevated) !important;
   border-bottom: 1px solid var(--vtop-border) !important;
   color: var(--vtop-text-primary) !important;
-  font-weight: 700 !important;
-  font-size: 1.05rem !important;
-  padding: 1rem 1.25rem !important;
+  font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  padding: 0.85rem 1.1rem !important;
 }
 
 .panel-body, .card-body {
   background: var(--vtop-surface) !important;
   color: var(--vtop-text-primary) !important;
-  padding: 1.25rem !important;
+  padding: 1.1rem !important;
 }
 
-.panel-footer, .card-footer {
-  background: var(--vtop-surface-elevated) !important;
-  border-top: 1px solid var(--vtop-border) !important;
-  color: var(--vtop-text-muted) !important;
-}
-
-/* ==========================================================================
-   Modern Tables (Attendance, Marks, Curriculum, Exam)
-   ========================================================================== */
-
+/* Modern Data Tables */
 table, .table {
   color: var(--vtop-text-primary) !important;
   background-color: var(--vtop-surface) !important;
   border: 1px solid var(--vtop-border) !important;
-  border-radius: var(--vtop-radius);
+  border-radius: var(--vtop-radius-sm);
   border-collapse: separate !important;
   border-spacing: 0 !important;
   overflow: hidden;
-  box-shadow: var(--vtop-shadow-sm);
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
 }
 
 .table > thead > tr > th, table th {
   background-color: var(--vtop-surface-elevated) !important;
-  color: var(--vtop-text-primary) !important;
+  color: var(--vtop-text-secondary) !important;
   font-weight: 600 !important;
-  font-size: 0.825rem !important;
+  font-size: 0.76rem !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  padding: 12px 14px !important;
+  letter-spacing: 0.04em !important;
+  padding: 10px 12px !important;
   border-top: none !important;
-  border-bottom: 2px solid var(--vtop-border) !important;
+  border-bottom: 1px solid var(--vtop-border) !important;
   border-left: none !important;
   border-right: none !important;
   white-space: nowrap;
 }
 
 .table > tbody > tr > td, table td {
-  padding: 12px 14px !important;
+  padding: 10px 12px !important;
   border-top: 1px solid var(--vtop-border) !important;
   border-left: none !important;
   border-right: none !important;
   border-bottom: none !important;
-  color: var(--vtop-text-secondary) !important;
-  font-size: 0.92rem;
+  color: var(--vtop-text-primary) !important;
+  font-size: 0.86rem;
   vertical-align: middle !important;
-  transition: background-color 0.15s ease;
 }
 
 .table > tbody > tr:hover td, table tr:hover td {
   background-color: var(--vtop-surface-hover) !important;
-  color: var(--vtop-text-primary) !important;
 }
 
-/* Badges & Chips */
-.badge, .label {
-  padding: 6px 12px !important;
-  border-radius: 9999px !important;
-  font-weight: 600 !important;
-  font-size: 0.78rem !important;
-  letter-spacing: 0.02em;
-}
+/* ==========================================================================
+   Academic Privacy Shield
+   ========================================================================== */
 
-.badge-success, .label-success {
-  background-color: var(--vtop-success-bg) !important;
-  color: var(--vtop-success) !important;
-  border: 1px solid rgba(16, 185, 129, 0.3) !important;
-}
-
-.badge-warning, .label-warning {
-  background-color: var(--vtop-warning-bg) !important;
-  color: var(--vtop-warning) !important;
-  border: 1px solid rgba(245, 158, 11, 0.3) !important;
-}
-
-.badge-danger, .label-danger {
-  background-color: var(--vtop-danger-bg) !important;
-  color: var(--vtop-danger) !important;
-  border: 1px solid rgba(239, 68, 68, 0.3) !important;
-}
-
-/* CGPA Privacy Blur */
-.vtop-cgpa-blur {
-  filter: blur(8px) !important;
-  cursor: pointer;
+.vtop-privacy-shielded {
+  filter: blur(7px);
   user-select: none;
-  transition: filter 0.25s ease;
+  cursor: pointer;
+  transition: filter 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  position: relative;
+  border-radius: var(--vtop-radius-xs);
+  display: inline-block;
 }
-.vtop-cgpa-blur:hover {
-  filter: blur(2px) !important;
+
+.vtop-privacy-shielded:focus {
+  outline: 2px solid var(--vtop-accent);
+  outline-offset: 2px;
 }
-.vtop-cgpa-revealed {
+
+.vtop-privacy-shielded:hover {
+  filter: blur(3px);
+}
+
+.vtop-privacy-shielded.revealed {
   filter: none !important;
+  user-select: auto !important;
 }
 
-/* Timetable Enhancements */
-.vtop-today-highlight {
-  background: rgba(99, 102, 241, 0.12) !important;
-  border-left: 3px solid var(--vtop-primary) !important;
-}
+/* ==========================================================================
+   Minimalist Floating Action Dock
+   ========================================================================== */
 
-.vtop-current-class-highlight {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(6, 182, 212, 0.25)) !important;
-  border: 2px solid var(--vtop-primary) !important;
-  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4) !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  border-radius: var(--vtop-radius-sm);
-  animation: pulseSlot 3s infinite alternate;
-}
-
-@keyframes pulseSlot {
-  0% { box-shadow: 0 0 8px rgba(99, 102, 241, 0.3); }
-  100% { box-shadow: 0 0 18px rgba(99, 102, 241, 0.6); }
-}
-
-/* Floating Quick Action Bar in Dashboard */
-.vtop-floating-dock {
+.vtop-dock {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999999;
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--vtop-glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--vtop-glass-border);
-  padding: 8px 14px;
+  gap: 4px;
+  background: var(--vtop-surface);
+  border: 1px solid var(--vtop-border-strong);
   border-radius: 9999px;
-  box-shadow: var(--vtop-shadow-lg);
-  z-index: 999999;
+  padding: 4px 6px;
+  box-shadow: var(--vtop-shadow-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.vtop-dock-btn {
+.vtop-dock-item {
   display: flex;
   align-items: center;
   gap: 6px;
   background: transparent;
   border: none;
   color: var(--vtop-text-secondary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
 }
 
-.vtop-dock-btn:hover {
+.vtop-dock-item:hover {
   background: var(--vtop-surface-hover);
   color: var(--vtop-text-primary);
-  transform: translateY(-1px);
 }
 
-.vtop-dock-btn.active {
-  background: var(--vtop-primary);
-  color: #ffffff;
+.vtop-dock-icon {
+  display: flex;
+  align-items: center;
+}
+
+.vtop-dock-kbd {
+  font-family: var(--vtop-font-mono);
+  font-size: 0.68rem;
+  background: var(--vtop-surface-elevated);
+  border: 1px solid var(--vtop-border);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--vtop-text-muted);
+}
+
+.vtop-dock-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--vtop-border);
+  margin: 0 2px;
+}
+
+/* ==========================================================================
+   Timetable Schedule Cards & Matrix Highlights
+   ========================================================================== */
+
+.vtop-timetable-card {
+  background: var(--vtop-surface);
+  border: 1px solid var(--vtop-border);
+  border-radius: var(--vtop-radius-md);
+  padding: 16px;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--vtop-shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vtop-timetable-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--vtop-border);
+  padding-bottom: 10px;
+}
+
+.vtop-timetable-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--vtop-text-primary);
+}
+
+.vtop-timetable-icon {
+  color: var(--vtop-accent);
+  display: flex;
+  align-items: center;
+}
+
+.vtop-timetable-count {
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--vtop-text-muted);
+}
+
+.vtop-slots-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vtop-slot-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--vtop-surface-elevated);
+  border: 1px solid var(--vtop-border);
+  border-radius: var(--vtop-radius-xs);
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  color: var(--vtop-text-primary);
+  font-weight: 500;
+}
+
+.vtop-slot-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vtop-accent);
+}
+
+.vtop-no-slots {
+  font-size: 0.8rem;
+  color: var(--vtop-text-muted);
+  font-style: italic;
+}
+
+.vtop-today-highlight {
+  background-color: var(--vtop-accent-subtle) !important;
+  border-left: 3px solid var(--vtop-accent) !important;
 }
