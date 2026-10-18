@@ -1,117 +1,286 @@
 /* ==========================================================================
-   VTOP Modern - Smart Attendance Calculator Styles
+   VTOP Modern - Studio Grade Attendance Styles
+   Precision data display, clean status chips, and what-if simulation
    ========================================================================== */
 
-/* Overall Summary Card Header */
-.vtop-attendance-summary-card {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+/* Overview Summary Card */
+.vtop-overview-card {
   background: var(--vtop-surface);
   border: 1px solid var(--vtop-border);
-  border-radius: var(--vtop-radius-lg);
+  border-radius: var(--vtop-radius-md);
+  box-shadow: var(--vtop-shadow-card);
   padding: 20px;
-  margin-bottom: 24px;
-  box-shadow: var(--vtop-shadow);
-}
-
-.vtop-summary-metric {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
-  padding: 12px 16px;
-  background: var(--vtop-surface-elevated);
-  border-radius: var(--vtop-radius);
-  border: 1px solid var(--vtop-border);
+  gap: 16px;
 }
 
-.vtop-metric-label {
-  font-size: 0.78rem;
+.vtop-overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--vtop-border);
+  padding-bottom: 12px;
+}
+
+.vtop-overview-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
   font-weight: 600;
+  color: var(--vtop-text-primary);
+}
+
+.vtop-overview-icon {
+  color: var(--vtop-accent);
+  display: flex;
+  align-items: center;
+}
+
+.vtop-overview-status {
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
+.vtop-status-safe, .vtop-status-caution, .vtop-status-on_edge {
+  background: var(--vtop-emerald-subtle);
+  color: var(--vtop-emerald);
+  border: 1px solid var(--vtop-emerald-border);
+}
+
+.vtop-status-critical {
+  background: var(--vtop-rose-subtle);
+  color: var(--vtop-rose);
+  border: 1px solid var(--vtop-rose-border);
+}
+
+/* Metrics Grid */
+.vtop-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.vtop-metric-tile {
+  background: var(--vtop-surface-elevated);
+  border: 1px solid var(--vtop-border);
+  border-radius: var(--vtop-radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vtop-metric-name {
+  font-size: 0.72rem;
+  font-weight: 500;
   color: var(--vtop-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 4px;
+  letter-spacing: 0.04em;
 }
 
-.vtop-metric-value {
-  font-size: 1.75rem;
-  font-weight: 800;
+.vtop-metric-val {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--vtop-text-primary);
-  font-family: var(--vtop-font-mono);
+  line-height: 1.2;
 }
 
-.vtop-metric-value.safe {
-  color: var(--vtop-success);
-}
-.vtop-metric-value.caution {
-  color: var(--vtop-warning);
-}
-.vtop-metric-value.danger {
-  color: var(--vtop-danger);
+.vtop-text-safe { color: var(--vtop-emerald) !important; }
+.vtop-text-caution { color: var(--vtop-amber) !important; }
+.vtop-text-critical { color: var(--vtop-rose) !important; }
+
+.vtop-metric-hint {
+  font-size: 0.72rem;
+  color: var(--vtop-text-muted);
 }
 
-/* Row-level Bunk/Attend Pill */
-.vtop-bunk-pill {
+/* Attendance Table Columns & Cell Styling */
+.vtop-enhanced-table th.vtop-col-quota {
+  color: var(--vtop-accent) !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+}
+
+.vtop-cell-quota {
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Status Quota Chips */
+.vtop-quota-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--vtop-radius-xs);
+  transition: all 0.15s ease;
+}
+
+.vtop-quota-icon {
+  display: flex;
+  align-items: center;
+}
+
+.vtop-quota-safe {
+  background: var(--vtop-emerald-subtle);
+  color: var(--vtop-emerald);
+  border: 1px solid var(--vtop-emerald-border);
+}
+
+.vtop-quota-caution {
+  background: var(--vtop-amber-subtle);
+  color: var(--vtop-amber);
+  border: 1px solid var(--vtop-amber-border);
+}
+
+.vtop-quota-on_edge {
+  background: var(--vtop-amber-subtle);
+  color: var(--vtop-amber);
+  border: 1px solid var(--vtop-amber-border);
+}
+
+.vtop-quota-critical {
+  background: var(--vtop-rose-subtle);
+  color: var(--vtop-rose);
+  border: 1px solid var(--vtop-rose-border);
+}
+
+.vtop-quota-nodata {
+  background: var(--vtop-surface-hover);
+  color: var(--vtop-text-muted);
+  border: 1px solid var(--vtop-border);
+}
+
+/* Quick Simulator Trigger Button */
+.vtop-sim-btn {
+  background: transparent;
+  border: 1px solid currentColor;
+  opacity: 0.6;
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  color: inherit;
+  margin-left: 4px;
+  line-height: 1.2;
+  transition: opacity 0.15s ease;
+}
+.vtop-sim-btn:hover {
+  opacity: 1;
+}
+
+/* What-If Simulator Drawer (Pop-up near row) */
+.vtop-sim-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: var(--vtop-surface);
+  border: 1px solid var(--vtop-border-strong);
+  border-radius: var(--vtop-radius-sm);
+  box-shadow: var(--vtop-shadow-card);
+  padding: 12px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: vtopFadeIn 0.15s ease;
+}
+
+.vtop-sim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--vtop-text-primary);
+  border-bottom: 1px solid var(--vtop-border);
+  padding-bottom: 6px;
+}
+
+.vtop-sim-close {
+  background: transparent;
+  border: none;
+  color: var(--vtop-text-muted);
+  cursor: pointer;
   font-size: 0.8rem;
-  font-weight: 700;
-  padding: 5px 12px;
-  border-radius: 9999px;
-  white-space: nowrap;
-  letter-spacing: 0.01em;
+}
+.vtop-sim-close:hover {
+  color: var(--vtop-text-primary);
 }
 
-.vtop-bunk-pill.can-bunk {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+.vtop-sim-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: var(--vtop-text-secondary);
 }
 
-.vtop-bunk-pill.must-attend {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  animation: gentleShake 4s ease-in-out infinite;
+.vtop-sim-controls label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-.vtop-bunk-pill.on-edge {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+.vtop-sim-controls input {
+  width: 48px;
+  padding: 2px 6px;
+  background: var(--vtop-surface-elevated) !important;
+  border: 1px solid var(--vtop-border) !important;
+  border-radius: 4px;
+  color: var(--vtop-text-primary) !important;
+  font-size: 0.78rem;
+  text-align: center;
 }
 
-@keyframes gentleShake {
-  0%, 100% { transform: translateX(0); }
-  2%, 6% { transform: translateX(-2px); }
-  4%, 8% { transform: translateX(2px); }
-  10% { transform: translateX(0); }
+.vtop-sim-result {
+  background: var(--vtop-surface-elevated);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 0.74rem;
+  color: var(--vtop-text-primary);
+  border: 1px solid var(--vtop-border);
 }
 
-/* Percentage Bar in Attendance Table */
-.vtop-progress-container {
+/* Inline Percentage Bar */
+.vtop-percent-display {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 72px;
+}
+
+.vtop-percent-text {
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.vtop-percent-track {
   width: 100%;
-  min-width: 90px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 4px;
+  background: var(--vtop-surface-hover);
   border-radius: 9999px;
   overflow: hidden;
-  margin-top: 6px;
 }
 
-.vtop-progress-fill {
+.vtop-percent-bar {
   height: 100%;
   border-radius: 9999px;
-  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.vtop-progress-fill.safe {
-  background: linear-gradient(90deg, #10b981, #06b6d4);
-}
-.vtop-progress-fill.caution {
-  background: linear-gradient(90deg, #f59e0b, #eab308);
-}
-.vtop-progress-fill.danger {
-  background: linear-gradient(90deg, #ef4444, #f43f5e);
-}
+.vtop-bar-safe { background: var(--vtop-emerald); }
+.vtop-bar-caution, .vtop-bar-on_edge { background: var(--vtop-amber); }
+.vtop-bar-critical { background: var(--vtop-rose); }
