@@ -1,74 +1,141 @@
-# 🎓 VTOP Modern — Academic Companion for VIT Students
+# VTOP Modern
 
-**VTOP Modern** is a high-performance browser extension (Manifest V3) that transforms the Vellore Institute of Technology student portal (**VTOP**) into a focused, modern academic companion.
+A lightweight, privacy-focused browser extension that modernizes the Vellore Institute of Technology (VIT) student portal with keyboard-driven navigation, exact attendance metrics, and an academic privacy shield.
 
-Designed with principles from **Linear**, **Raycast**, and **Arc**, it replaces legacy tables, cluttered layouts, and archaic UI with exact mathematical attendance tracking, an academic privacy shield, a keyboard-driven command menu, and an obsidian design system.
+Compatible with **Chrome**, **Brave**, **Edge**, and **Firefox** (Manifest V3).
 
----
+## About
 
-## ✨ Features
+VTOP Modern was built to address the persistent friction points in the Vellore Institute of Technology (VIT) student portal: visual clutter, nested navigation, lack of attendance buffer calculations, and exposed academic records on shared or monitored screens.
 
-### 📊 Exact 75% Attendance Engine & "What-If" Simulator
-- **Integer Math Calculation**: Mathematically verified integer formulas (`floor((4A - 3C) / 3)` for bunks, `max(0, 3C - 4A)` for recovery) with zero floating-point rounding errors.
-- **Bunk Margin**: Instantly shows how many classes you can safely miss while remaining strictly $\ge 75\%$.
-- **Recovery Quota**: When below 75%, clearly shows exactly how many consecutive classes you must attend to regain examination eligibility.
-- **Interactive "What-If" Simulator**: Click the `±` button on any course row to test hypothetical future absences or attendances with live recalculated percentages.
-- **Semester Overview Card**: Displays your aggregate attendance percentage, missable buffer pool, and debarment risk count.
+By treating the portal as a professional productivity environment rather than a legacy administrative viewer, VTOP Modern provides immediate answers to daily academic questions:
+- *How many classes can I safely miss before dropping below the mandatory 75% threshold?*
+- *What lectures and venues do I have scheduled today?*
+- *How can I review attendance or marks without exposing my private CGPA to onlookers in a computer lab?*
 
-### 🕶️ Academic Privacy Shield
-- **Targeted Masking**: Automatically shields sensitive academic data (CGPA, semester GPA, exam marks, scores, and grades) from curious onlookers in labs or public areas.
-- **Accessible Reveal**: Press `Enter` / `Space` or click any masked metric to momentarily reveal it without destroying or modifying the underlying DOM values.
+### Topics & Tags
 
-### ⌨️ Raycast-Style Command Palette (`Ctrl+K` / `Cmd+K`)
-- Press `Ctrl+K` (Windows/Linux) or `Cmd+K` (macOS) anywhere on VTOP.
-- Instantly search and jump to Attendance, Class Timetable, Digital Assignments, Marks, or Exam Schedules without hunting through multi-level accordion menus.
-
-### 📅 Daily Schedule & Slot Assistant
-- Automatically parses the VTOP slot matrix into a clean **"Today's Schedule"** timeline card.
-- Highlights today's day of the week and active lecture periods.
-
-### ⚡ Frictionless Authentication
-- Auto-capitalizes your Registration Number as you type (e.g., `21bce...` $\rightarrow$ `21BCE...`).
-- Auto-focuses sequentially from username to password to captcha.
-- Press `Enter` on the pre-login portal to immediately proceed to Student Login.
-
-### 🎛️ Control Center Popup
-- Real-time **Academic Standing Card** synced directly from your last viewed attendance.
-- Tactile switch controls for feature toggles.
-- Quick direct links to VIT Mail (Outlook) and Moodle LMS.
+`vtop` • `vit` • `vit-chennai` • `vit-vellore` • `vit-ap` • `vit-bhopal` • `browser-extension` • `manifest-v3` • `chrome-extension` • `firefox-addon` • `attendance-calculator` • `student-portal` • `academic-privacy` • `command-palette` • `productivity`
 
 ---
 
-## 🛠️ Installation
+## Overview
 
-### Chrome / Brave / Edge (Chromium)
-1. Open your browser and navigate to:
+VTOP Modern replaces the legacy interface of VTOP with a restrained, high-density layout inspired by modern developer tools. It runs completely client-side, making zero network calls to third parties and transmitting no personal or academic data.
+
+### Core Capabilities
+
+- **Integer Attendance Engine**: Calculates safe bunk margins and recovery targets without floating-point errors.
+- **What-If Attendance Simulator**: Interactive row-level drawer to test hypothetical absences or attendances.
+- **Academic Privacy Shield**: Masks CGPA, GPA, CAT/FAT marks, and grades from public view with click-to-reveal.
+- **Command Palette (`Ctrl+K` / `Cmd+K`)**: Rapid keyboard navigation across VTOP modules without nested menu drilling.
+- **Daily Schedule Assistant**: Translates the weekly slot matrix into a clean, chronological "Today's Schedule" card.
+- **Authentication Improvements**: Sequential field auto-focus, automatic uppercase formatting for registration numbers, and keyboard shortcuts.
+- **Control Center Popup**: 340px compact extension popup with live academic standing and tactile preference switches.
+
+---
+
+## Keyboard Shortcuts
+
+| Shortcut | Context | Action |
+| :--- | :--- | :--- |
+| `Ctrl + K` / `Cmd + K` | Portal Pages | Open the command palette to search and jump to pages |
+| `Enter` / `Space` | Shielded Elements | Toggle visibility of a masked grade or CGPA metric |
+| `Enter` or `S` | Pre-login Landing | Submit and proceed directly to Student Login |
+| `Enter` | Password Field | Advance focus automatically to the Captcha input |
+| `Esc` | Command Palette | Dismiss the command menu |
+
+---
+
+## Mathematical Specification
+
+VTOP requires a minimum of **75% attendance** to be eligible for Final Assessment Tests (FAT). The extension uses exact integer arithmetic rather than decimal approximations to avoid off-by-one errors:
+
+Let $A$ be attended hours and $C$ be conducted hours.
+
+### Safe Bunk Allowance ($b$)
+The maximum number of future classes that can be missed while keeping attendance at or above 75%:
+
+$$\frac{A}{C + b} \ge 0.75 \implies 4A \ge 3(C + b) \implies b = \left\lfloor \frac{4A - 3C}{3} \right\rfloor$$
+
+*(Applied when $4A \ge 3C$; otherwise 0 bunks available).*
+
+### Recovery Target ($r$)
+The minimum number of consecutive future classes that must be attended to bring attendance up to 75%:
+
+$$\frac{A + r}{C + r} \ge 0.75 \implies 4(A + r) \ge 3(C + r) \implies r = \max(0, 3C - 4A)$$
+
+### Aggregate Percentage
+Computed strictly as:
+
+$$\text{Aggregate } \% = \frac{\sum A_i}{\sum C_i} \times 100$$
+
+The extension never averages percentages across courses, preventing incorrect weighting between theory and lab credit hours.
+
+---
+
+## Installation
+
+### Chrome, Brave, and Edge
+
+1. Navigate to `chrome://extensions/` (or `brave://extensions/`).
+2. Toggle **Developer mode** on in the top-right corner.
+3. Click **Load unpacked** in the top-left corner.
+4. Select the project directory:
    ```text
-   chrome://extensions/
+   ~/Desktop/projects/vtop-modern-extension
    ```
-2. Enable **Developer mode** using the toggle switch in the top-right corner.
-3. Click **"Load unpacked"** in the top-left corner.
-4. Select the directory:
-   ```text
-   /home/rakshit-737/Desktop/projects/vtop-modern-extension
-   ```
-5. Open [https://vtopcc.vit.ac.in/vtop/open/page](https://vtopcc.vit.ac.in/vtop/open/page) and refresh the page!
+5. Navigate to [vtopcc.vit.ac.in](https://vtopcc.vit.ac.in/vtop/open/page) to verify.
 
 ### Firefox
-1. In the address bar, type:
+
+1. In the address bar, enter:
    ```text
    about:debugging#/runtime/this-firefox
    ```
-2. Under **Temporary Extensions**, click **"Load Temporary Add-on..."**.
-3. Select `manifest.json` from:
-   ```text
-   /home/rakshit-737/Desktop/projects/vtop-modern-extension/manifest.json
-   ```
-4. The extension is immediately loaded and active.
+2. Under **Temporary Extensions**, click **Load Temporary Add-on...**.
+3. Select `manifest.json` from the extension directory.
+4. The extension will activate immediately.
 
 ---
 
-## 🔒 Security & Privacy Guarantees
-- **100% Client-Side**: Executes exclusively in your local browser sandbox via content scripts.
-- **Zero Telemetry**: No third-party trackers, no remote analytics, and zero external network requests.
-- **Credential Safety**: Never reads, intercepts, or transmits your registration password or credentials.
+## Project Structure
+
+```text
+vtop-modern-extension/
+├── manifest.json              # Manifest V3 configuration (Chromium & Firefox Gecko ID)
+├── test-attendance.js         # Automated mathematical verification test suite
+├── icons/                     # Multi-resolution brand icons (16, 32, 48, 128px)
+├── popup/
+│   ├── popup.html             # Control center markup
+│   ├── popup.css              # Compact 340px styling
+│   └── popup.js               # State synchronization & storage handler
+├── scripts/
+│   ├── icons.js               # Unified Feather/Lucide vector SVG registry
+│   ├── theme-manager.js       # Fast theme initializer (document_start)
+│   ├── login-helper.js        # Autofocus & uppercase input formatting
+│   ├── attendance.js          # Exact math engine & what-if simulator
+│   ├── timetable.js           # Daily schedule card & slot highlighter
+│   ├── command-palette.js     # Raycast-style keyboard navigation overlay
+│   └── content.js             # Privacy shield & floating action dock
+└── styles/
+    ├── theme.css              # Obsidian dark & porcelain light design tokens
+    ├── login.css              # Pre-login auth hub styling
+    ├── dashboard.css          # Portal tables, panels, and dock layout
+    ├── attendance.css         # Attendance overview grid & simulator drawer
+    └── command-palette.css    # Command menu modal & search styles
+```
+
+---
+
+## Security & Privacy Model
+
+- **Local Execution**: All scripts run strictly within the client browser context.
+- **Zero Network Egress**: The extension does not communicate with external servers, telemetry APIs, or remote databases.
+- **Credential Isolation**: Passwords and session cookies are never captured, logged, or altered.
+
+---
+
+## License
+
+MIT License. Developed for VIT students.
