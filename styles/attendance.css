@@ -1,0 +1,117 @@
+/* ==========================================================================
+   VTOP Modern - Smart Attendance Calculator Styles
+   ========================================================================== */
+
+/* Overall Summary Card Header */
+.vtop-attendance-summary-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  background: var(--vtop-surface);
+  border: 1px solid var(--vtop-border);
+  border-radius: var(--vtop-radius-lg);
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: var(--vtop-shadow);
+}
+
+.vtop-summary-metric {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  background: var(--vtop-surface-elevated);
+  border-radius: var(--vtop-radius);
+  border: 1px solid var(--vtop-border);
+}
+
+.vtop-metric-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--vtop-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.vtop-metric-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--vtop-text-primary);
+  font-family: var(--vtop-font-mono);
+}
+
+.vtop-metric-value.safe {
+  color: var(--vtop-success);
+}
+.vtop-metric-value.caution {
+  color: var(--vtop-warning);
+}
+.vtop-metric-value.danger {
+  color: var(--vtop-danger);
+}
+
+/* Row-level Bunk/Attend Pill */
+.vtop-bunk-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.vtop-bunk-pill.can-bunk {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.vtop-bunk-pill.must-attend {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  animation: gentleShake 4s ease-in-out infinite;
+}
+
+.vtop-bunk-pill.on-edge {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+@keyframes gentleShake {
+  0%, 100% { transform: translateX(0); }
+  2%, 6% { transform: translateX(-2px); }
+  4%, 8% { transform: translateX(2px); }
+  10% { transform: translateX(0); }
+}
+
+/* Percentage Bar in Attendance Table */
+.vtop-progress-container {
+  width: 100%;
+  min-width: 90px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.vtop-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vtop-progress-fill.safe {
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+}
+.vtop-progress-fill.caution {
+  background: linear-gradient(90deg, #f59e0b, #eab308);
+}
+.vtop-progress-fill.danger {
+  background: linear-gradient(90deg, #ef4444, #f43f5e);
+}
