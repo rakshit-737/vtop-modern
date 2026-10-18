@@ -22,6 +22,12 @@
   "permissions": [
     "storage"
   ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "vtop-modern@vit.ac.in",
+      "strict_min_version": "109.0"
+    }
+  },
   "host_permissions": [
     "*://vtopcc.vit.ac.in/*",
     "*://vtop.vit.ac.in/*",
