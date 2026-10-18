@@ -1,6 +1,6 @@
 {
   "name": "vtop-modern-extension",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "A privacy-first, local-only VTOP browser extension.",
   "type": "module",
