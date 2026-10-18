@@ -1,0 +1,279 @@
+/* ==========================================================================
+   VTOP Modern - Pre-Login & Login Interface Overhaul
+   ========================================================================== */
+
+/* Pre-Login Page Background */
+body.WhiteBackground {
+  background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+              var(--vtop-bg) !important;
+  color: var(--vtop-text-primary) !important;
+  min-height: 100vh;
+}
+
+/* Header Redesign */
+#vtopOpenPageHeader {
+  background: var(--vtop-glass-bg) !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid var(--vtop-glass-border) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  padding: 0.75rem 2rem !important;
+  transition: all 0.3s ease;
+}
+
+#vtopOpenPageHeader img.VITEmblem {
+  filter: drop-shadow(0 2px 8px rgba(99, 102, 241, 0.3));
+  transition: transform 0.2s ease;
+}
+#vtopOpenPageHeader img.VITEmblem:hover {
+  transform: scale(1.02);
+}
+
+/* Add Modern Portal Badge in Header */
+.vtop-modern-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.2));
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #38bdf8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  margin-left: 1rem;
+}
+
+/* Hero Section */
+.WhiteBackground .card.card-body.border-0 {
+  background: transparent !important;
+}
+
+strong.primaryTextColor1 {
+  background: var(--vtop-gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+}
+
+.WhiteBackground .h6.text-dark {
+  color: var(--vtop-text-secondary) !important;
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+  line-height: 1.6;
+  max-width: 680px;
+}
+
+/* Role Selector Cards Container */
+.row-cols-2.row-cols-sm-4 {
+  margin-top: 1.5rem !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Card Styling - Glassmorphism & Hover Glow */
+.cardStudent, .cardEmployee, .cardParent, .cardAlumni {
+  background: var(--vtop-gradient-card) !important;
+  border: 1px solid var(--vtop-glass-border) !important;
+  border-radius: var(--vtop-radius-lg) !important;
+  box-shadow: var(--vtop-shadow) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.75rem 1rem !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cardStudent::before, .cardEmployee::before, .cardParent::before, .cardAlumni::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Student Card (Hero Accent) */
+.cardStudent::before {
+  background: linear-gradient(90deg, #6366f1, #38bdf8);
+  opacity: 1;
+}
+
+.cardStudent {
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.25) !important;
+}
+
+.cardStudent:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--vtop-primary) !important;
+  box-shadow: 0 16px 36px -4px rgba(99, 102, 241, 0.4), 0 0 20px rgba(99, 102, 241, 0.2) !important;
+}
+
+.cardEmployee:hover, .cardParent:hover, .cardAlumni:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: var(--vtop-shadow-lg) !important;
+}
+
+/* Circle & Icons inside cards */
+.circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle img {
+  width: 68px !important;
+  height: 68px !important;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.cardStudent:hover .circle img {
+  background: var(--vtop-primary-light);
+  transform: scale(1.1);
+}
+
+.circle p {
+  color: var(--vtop-text-primary) !important;
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+  margin-top: 14px !important;
+  letter-spacing: 0.01em;
+}
+
+/* Ranking / Spotlight Box */
+.card.border-0.shadow-lg {
+  background: var(--vtop-surface) !important;
+  border: 1px solid var(--vtop-border) !important;
+  border-radius: var(--vtop-radius-lg) !important;
+  box-shadow: var(--vtop-shadow) !important;
+}
+
+.spotlightHeader {
+  background: var(--vtop-surface-elevated) !important;
+  border-bottom: 1px solid var(--vtop-border) !important;
+  border-radius: var(--vtop-radius-lg) var(--vtop-radius-lg) 0 0 !important;
+  padding: 1rem 1.25rem !important;
+}
+
+.spotlightHeader .hightlight1 {
+  color: var(--vtop-text-primary) !important;
+  font-size: 1.05rem;
+}
+
+.list-group-item.bg-transparent {
+  border-bottom: 1px solid var(--vtop-border) !important;
+  color: var(--vtop-text-secondary) !important;
+  padding: 0.85rem 1.25rem !important;
+}
+
+.list-group-item.bg-transparent:last-child {
+  border-bottom: none !important;
+}
+
+.list-group-item .goldIcons i {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+}
+
+.list-group-item strong.small, .list-group-item span.small {
+  color: var(--vtop-text-secondary) !important;
+  font-size: 0.875rem !important;
+}
+
+/* App download buttons */
+.row-cols-2.row-cols-sm-4.justify-content-center .fw-bold.text-primary {
+  color: var(--vtop-text-primary) !important;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.footercolor.fixed-bottom {
+  background: var(--vtop-surface) !important;
+  border-top: 1px solid var(--vtop-border) !important;
+  color: var(--vtop-text-muted) !important;
+  padding: 0.6rem 0 !important;
+}
+
+/* ==========================================================================
+   Login Dialog / Modal & Inputs
+   ========================================================================== */
+
+/* Login Modal Container */
+.modal-content {
+  background: var(--vtop-surface) !important;
+  border: 1px solid var(--vtop-glass-border) !important;
+  border-radius: var(--vtop-radius-lg) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+  color: var(--vtop-text-primary) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--vtop-border) !important;
+  padding: 1.25rem 1.5rem !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--vtop-border) !important;
+  padding: 1rem 1.5rem !important;
+}
+
+.modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Input Fields Overhaul */
+input[type="text"], input[type="password"], select.form-control, .form-control {
+  background: var(--vtop-bg) !important;
+  border: 1.5px solid var(--vtop-border) !important;
+  border-radius: var(--vtop-radius-sm) !important;
+  color: var(--vtop-text-primary) !important;
+  padding: 0.65rem 0.9rem !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s ease !important;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, .form-control:focus {
+  border-color: var(--vtop-primary) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+  outline: none !important;
+}
+
+/* Buttons */
+.btn-primary, button[type="submit"].btn-primary, .btn-success {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  border: none !important;
+  border-radius: var(--vtop-radius-sm) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.6rem 1.4rem !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover, button[type="submit"].btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5) !important;
+}
+
+/* Captcha image container styling */
+#imgCaptcha, img[src*="captcha"] {
+  border-radius: var(--vtop-radius-sm);
+  border: 1px solid var(--vtop-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
