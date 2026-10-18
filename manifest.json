@@ -1,0 +1,69 @@
+{
+  "manifest_version": 3,
+  "name": "VTOP Modern - Elevate Your Portal",
+  "version": "1.0.0",
+  "description": "Modern UI overhaul for VTOP with Dark Mode, Smart Attendance Bunk/Attend Calculator, Clean Timetable, and CGPA Privacy.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "VTOP Modern Settings"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://vtopcc.vit.ac.in/*",
+    "*://vtop.vit.ac.in/*",
+    "*://vtop2.vit.ac.in/*",
+    "*://vtopbhopal.vit.ac.in/*",
+    "*://vtop.vitap.ac.in/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://vtopcc.vit.ac.in/*",
+        "*://vtop.vit.ac.in/*",
+        "*://vtop2.vit.ac.in/*",
+        "*://vtopbhopal.vit.ac.in/*",
+        "*://vtop.vitap.ac.in/*"
+      ],
+      "css": [
+        "styles/theme.css",
+        "styles/login.css",
+        "styles/dashboard.css",
+        "styles/attendance.css"
+      ],
+      "js": [
+        "scripts/theme-manager.js",
+        "scripts/login-helper.js",
+        "scripts/attendance.js",
+        "scripts/timetable.js",
+        "scripts/content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "styles/*"],
+      "matches": [
+        "*://vtopcc.vit.ac.in/*",
+        "*://vtop.vit.ac.in/*",
+        "*://vtop2.vit.ac.in/*",
+        "*://vtopbhopal.vit.ac.in/*",
+        "*://vtop.vitap.ac.in/*"
+      ]
+    }
+  ]
+}
