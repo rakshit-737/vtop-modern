@@ -9,8 +9,12 @@
   },
   "scripts": {
     "dev": "wxt",
+    "clean": "wxt clean",
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox --mv3",
+    "package:chrome": "wxt zip",
+    "package:firefox": "wxt zip -b firefox --mv3",
+    "package": "npm run clean && npm run validate && npm run package:chrome && npm run package:firefox",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

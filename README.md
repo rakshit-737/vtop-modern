@@ -106,6 +106,7 @@ npm run format:check
 npm run build                 # Chromium / chrome-mv3
 npm run build:firefox        # Firefox / firefox-mv3
 npm run validate              # all checks and both production builds
+npm run package               # clean, validate, and create Chrome + Firefox ZIPs
 ```
 
 `npm test` does not access VTOP or the network. It uses sanitized local DOM
@@ -142,6 +143,26 @@ For Firefox:
 1. Open `about:debugging#/runtime/this-firefox`.
 2. Choose **Load Temporary Add-on…**.
 3. Select `.output/firefox-mv3/manifest.json`.
+
+## Release packages
+
+Run the package workflow from a clean checkout:
+
+```sh
+npm ci
+npm run package
+```
+
+The generated, versioned archives are written under `.output/`:
+
+```text
+.output/vtop-modern-extension-<package-version>-chrome.zip
+.output/vtop-modern-extension-<package-version>-firefox.zip
+```
+
+Only those browser-specific archives should be uploaded. The `package` script
+cleans WXT's generated output before validation, so an old MV2 directory or
+stale archive cannot accidentally be distributed with the current release.
 
 The extension matches only these VTOP hosts:
 

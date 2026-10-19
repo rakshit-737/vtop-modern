@@ -4,7 +4,7 @@ const browserMock = vi.hoisted(() => ({
   storage: {
     local: {
       get: vi.fn(async () => ({})),
-      set: vi.fn(async () => undefined),
+      set: vi.fn<(values: Record<string, unknown>) => Promise<void>>(async () => undefined),
       remove: vi.fn(async () => undefined),
     },
     onChanged: {
@@ -29,6 +29,8 @@ function lifecycle(type: 'initial' | 'mutation' = 'initial'): {
 describe('attendance enhancement lifecycle', () => {
   beforeEach(() => {
     document.body.replaceChildren();
+    browserMock.storage.local.set.mockClear();
+    browserMock.storage.local.remove.mockClear();
   });
 
   it('keeps no-data cells visible and removes stale summaries after replacement', () => {
@@ -48,5 +50,15 @@ describe('attendance enhancement lifecycle', () => {
     expect(document.querySelectorAll('.vtop-modern-quota-cell')).toHaveLength(1);
     expect(document.querySelector('.vtop-modern-quota-cell')?.textContent).toContain('No data');
     expect(browserMock.storage.local.remove).toHaveBeenCalled();
+  });
+
+  it('stores the visible table summary when several tables are present', () => {
+    document.body.innerHTML = `
+      <div hidden><table><tr><th>Course</th><th>Attended</th><th>Conducted</th></tr><tr><td>A</td><td>1</td><td>2</td></tr></table></div>
+      <table><tr><th>Course</th><th>Attended</th><th>Conducted</th></tr><tr><td>B</td><td>9</td><td>10</td></tr></table>`;
+    enhanceAttendance(lifecycle());
+    const stored = browserMock.storage.local.set.mock.calls.at(-1)?.[0];
+    const summary = stored ? Object.values(stored)[0] : undefined;
+    expect(summary).toMatchObject({ attended: 9, conducted: 10 });
   });
 });

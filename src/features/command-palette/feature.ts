@@ -75,6 +75,7 @@ export class CommandPalette {
   private mount: HTMLElement | null = null;
   private input: HTMLInputElement | null = null;
   private results: HTMLElement | null = null;
+  private modal: HTMLElement | null = null;
   private activeIndex = 0;
   private filtered: PaletteCommand[] = [];
   private previousFocus: Element | null = null;
@@ -91,6 +92,9 @@ export class CommandPalette {
     window.removeEventListener('keydown', this.handleGlobalKeydown);
     this.mount?.remove();
     this.mount = null;
+    this.modal = null;
+    this.input = null;
+    this.results = null;
   }
 
   open(): void {
@@ -206,10 +210,12 @@ export class CommandPalette {
     overlay.className = 'overlay';
     overlay.hidden = true;
     const modal = document.createElement('section');
+    this.modal = modal;
     modal.className = 'modal';
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
     modal.setAttribute('aria-label', 'VTOP Modern command palette');
+    modal.addEventListener('keydown', this.handleModalKeydown);
     const search = document.createElement('div');
     search.className = 'search';
     appendText(search, 'span', '⌕', undefined);
@@ -217,12 +223,14 @@ export class CommandPalette {
     this.input.type = 'search';
     this.input.placeholder = 'Search visible portal pages and actions…';
     this.input.setAttribute('aria-label', 'Search commands');
+    this.input.setAttribute('aria-controls', 'vtop-command-results');
     this.input.addEventListener('input', () => this.filter(this.input?.value ?? ''));
     this.input.addEventListener('keydown', this.handleInputKeydown);
     search.append(this.input);
     appendText(search, 'kbd', 'Esc');
     this.results = document.createElement('div');
     this.results.className = 'results';
+    this.results.id = 'vtop-command-results';
     this.results.setAttribute('role', 'listbox');
     this.status = appendText(modal, 'div', '', 'empty');
     this.status.hidden = true;
@@ -265,6 +273,32 @@ export class CommandPalette {
     }
   };
 
+  private readonly handleModalKeydown = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.close();
+      return;
+    }
+    if (event.key !== 'Tab' || !this.modal) return;
+    const focusable = [
+      this.input,
+      ...this.modal.querySelectorAll<HTMLButtonElement>('.item'),
+    ].filter(
+      (element): element is HTMLInputElement | HTMLButtonElement => element instanceof HTMLElement,
+    );
+    if (focusable.length === 0) return;
+    const root = this.modal.getRootNode();
+    const current = root instanceof ShadowRoot ? root.activeElement : document.activeElement;
+    const currentIndex = focusable.indexOf(current as HTMLInputElement | HTMLButtonElement);
+    const nextIndex = event.shiftKey
+      ? currentIndex <= 0
+        ? focusable.length - 1
+        : currentIndex - 1
+      : (currentIndex + 1) % focusable.length;
+    event.preventDefault();
+    focusable[nextIndex]?.focus();
+  };
+
   private filter(query: string): void {
     const normalized = normalizedText(query);
     const commands = this.commands();
@@ -283,6 +317,7 @@ export class CommandPalette {
     if (!this.results || !this.status) return;
     const results = this.results;
     results.replaceChildren();
+    this.input?.removeAttribute('aria-activedescendant');
     this.status.hidden = this.filtered.length > 0;
     if (this.filtered.length === 0) {
       this.status.textContent = 'No matching commands.';
@@ -298,8 +333,10 @@ export class CommandPalette {
       const item = document.createElement('button');
       item.type = 'button';
       item.className = 'item';
+      item.id = `vtop-command-option-${index}`;
       item.setAttribute('role', 'option');
       item.setAttribute('aria-selected', String(index === this.activeIndex));
+      if (index === this.activeIndex) this.input?.setAttribute('aria-activedescendant', item.id);
       const info = document.createElement('span');
       info.className = 'info';
       appendText(info, 'span', command.title, 'title');

@@ -5,7 +5,7 @@ import { detectVtopRoute, VTOP_MATCH_PATTERNS } from '../src/core/routing/vtop-r
 import { createSettingsStore, createSummaryStore } from '../src/core/storage/store';
 import { clearAttendanceEnhancements, enhanceAttendance } from '../src/features/attendance/feature';
 import { CommandPalette } from '../src/features/command-palette/feature';
-import { enhanceLogin, focusLoginField } from '../src/features/auth/login';
+import { enhanceLogin, focusLoginField, shouldFocusLoginField } from '../src/features/auth/login';
 import {
   createPrivacyDock,
   shieldAcademicValues,
@@ -84,7 +84,22 @@ export default defineContentScript({
         clearTimetableEnhancements(document);
       }
 
-      if (route.page === 'login' || route.page === 'prelogin') enhanceLogin(event);
+      if (route.page === 'login' || route.page === 'prelogin') {
+        enhanceLogin(event);
+        if (
+          settings.autoFocus &&
+          shouldFocusLoginField(event) &&
+          !(
+            document.activeElement instanceof HTMLInputElement ||
+            document.activeElement instanceof HTMLTextAreaElement ||
+            document.activeElement instanceof HTMLSelectElement ||
+            (document.activeElement instanceof HTMLElement &&
+              document.activeElement.isContentEditable)
+          )
+        ) {
+          window.setTimeout(focusLoginField, 0);
+        }
+      }
       if (route.page === 'login' || route.page === 'prelogin') {
         if (!authSummaryCleared) {
           authSummaryCleared = true;
@@ -114,12 +129,6 @@ export default defineContentScript({
       updatePrivacyShield(document, stored.privacyShield);
       if (dock) updatePrivacyDock(dock, stored.privacyShield);
       coordinator.refresh();
-      const route = detectVtopRoute(window.location);
-      if (stored.autoFocus && (route.page === 'login' || route.page === 'prelogin')) {
-        window.setTimeout(() => {
-          if (!(document.activeElement instanceof HTMLInputElement)) focusLoginField();
-        }, 0);
-      }
     });
     settingsStore.subscribe((stored) => {
       const previous = settings;

@@ -42,3 +42,21 @@ export function focusLoginField(): void {
   const target = !username?.value ? username : !password?.value ? password : captcha;
   target?.focus();
 }
+
+export function shouldFocusLoginField(event: LifecycleEvent): boolean {
+  if (event.type === 'initial') return true;
+  return event.roots.some((root) => {
+    if (root instanceof HTMLInputElement) {
+      return (
+        root.matches(USERNAME_SELECTORS) ||
+        root.matches(PASSWORD_SELECTORS) ||
+        root.matches(CAPTCHA_SELECTORS)
+      );
+    }
+    return root.querySelector<HTMLInputElement>(
+      `${USERNAME_SELECTORS}, ${PASSWORD_SELECTORS}, ${CAPTCHA_SELECTORS}`,
+    )
+      ? true
+      : false;
+  });
+}

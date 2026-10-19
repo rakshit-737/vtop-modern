@@ -54,6 +54,15 @@ function removeOrphanAttendanceSummaries(): void {
   });
 }
 
+function isVisible(table: HTMLTableElement): boolean {
+  for (let current: HTMLElement | null = table; current; current = current.parentElement) {
+    if (current.hidden || current.getAttribute('aria-hidden') === 'true') return false;
+    const style = window.getComputedStyle(current);
+    if (style.display === 'none' || style.visibility === 'hidden') return false;
+  }
+  return true;
+}
+
 function addQuota(tableData: ParsedAttendanceTable): ReturnType<typeof buildAttendanceSummary> {
   const { table, headerRow, rows } = tableData;
   const sourceId = getTableId(table);
@@ -160,12 +169,7 @@ export function enhanceAttendance(event: LifecycleEvent): void {
     ): item is { table: HTMLTableElement; summary: NonNullable<ReturnType<typeof addQuota>> } =>
       item.summary !== null,
   );
-  const active =
-    validTables.find(({ table }) => {
-      if (table.hidden || table.getAttribute('aria-hidden') === 'true') return false;
-      const style = window.getComputedStyle(table);
-      return style.display !== 'none' && style.visibility !== 'hidden';
-    }) ?? validTables[0];
+  const active = validTables.find(({ table }) => isVisible(table)) ?? validTables[0];
   const hostname = window.location.hostname;
   if (active) {
     const key = summaryKey(active.summary);

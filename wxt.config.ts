@@ -26,7 +26,7 @@ export default defineConfig({
       128: 'icon128.png',
     },
     action: {
-      default_title: 'VTOP Modern Control Center',
+      default_title: 'VTOP Modern',
     },
   },
 });
