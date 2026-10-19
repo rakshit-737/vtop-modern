@@ -5,6 +5,16 @@ const academicTextPattern = /^(?:CGPA|GPA|Grade Point)\s*[:=]?\s*\d+(?:\.\d+)?/i
 const academicLabelPattern = /CGPA|GPA|GRADE POINT/i;
 const sensitiveHeaderPattern = /marks?|scored|grade|gpa|cgpa|cat|fat/i;
 
+interface ShieldBinding {
+  toggle: (event: Event) => void;
+  keydown: (event: KeyboardEvent) => void;
+  role: string | null;
+  tabIndex: string | null;
+  ariaLabel: string | null;
+}
+
+const bindings = new WeakMap<HTMLElement, ShieldBinding>();
+
 function textOf(element: Element | null | undefined): string {
   return element?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
 }
@@ -21,24 +31,47 @@ function setShieldState(element: HTMLElement, enabled: boolean): void {
 }
 
 function bindShield(element: HTMLElement, enabled: boolean): void {
-  const isNew = element.dataset.vtopModernPrivacyBound !== 'true';
-  if (element.dataset.vtopModernPrivacyBound !== 'true') {
-    element.dataset.vtopModernPrivacyBound = 'true';
-    element.tabIndex = 0;
-    element.setAttribute('role', 'button');
+  const isNew = !bindings.has(element);
+  if (isNew) {
     const toggle = (event: Event): void => {
       event.stopPropagation();
       const nextEnabled = !element.classList.contains(SHIELDED);
       setShieldState(element, nextEnabled);
     };
-    element.addEventListener('click', toggle);
-    element.addEventListener('keydown', (event) => {
+    const keydown = (event: KeyboardEvent): void => {
       if (event.key !== 'Enter' && event.key !== ' ') return;
       event.preventDefault();
       toggle(event);
+    };
+    bindings.set(element, {
+      toggle,
+      keydown,
+      role: element.getAttribute('role'),
+      tabIndex: element.getAttribute('tabindex'),
+      ariaLabel: element.getAttribute('aria-label'),
     });
+    element.dataset.vtopModernPrivacyBound = 'true';
+    element.tabIndex = 0;
+    element.setAttribute('role', 'button');
+    element.addEventListener('click', toggle);
+    element.addEventListener('keydown', keydown);
   }
   if (isNew) setShieldState(element, enabled);
+}
+
+function unbindShield(element: HTMLElement): void {
+  const binding = bindings.get(element);
+  if (!binding) return;
+  element.removeEventListener('click', binding.toggle);
+  element.removeEventListener('keydown', binding.keydown);
+  bindings.delete(element);
+  element.classList.remove(SHIELDED, 'revealed');
+  if (binding.role === null) element.removeAttribute('role');
+  else element.setAttribute('role', binding.role);
+  if (binding.tabIndex === null) element.removeAttribute('tabindex');
+  else element.setAttribute('tabindex', binding.tabIndex);
+  if (binding.ariaLabel === null) element.removeAttribute('aria-label');
+  else element.setAttribute('aria-label', binding.ariaLabel);
 }
 
 function shieldTable(table: HTMLTableElement, enabled: boolean): void {
@@ -60,6 +93,10 @@ function shieldTable(table: HTMLTableElement, enabled: boolean): void {
 }
 
 export function shieldAcademicValues(root: ParentNode, enabled: boolean): void {
+  if (!enabled) {
+    updatePrivacyShield(root, false);
+    return;
+  }
   const candidates =
     root instanceof HTMLElement
       ? [root, ...root.querySelectorAll('td, span, div, strong, b, h4, h5')]
@@ -85,8 +122,17 @@ export function shieldAcademicValues(root: ParentNode, enabled: boolean): void {
 }
 
 export function updatePrivacyShield(root: ParentNode, enabled: boolean): void {
-  const elements = root.querySelectorAll<HTMLElement>('[data-vtop-modern-privacy-bound="true"]');
-  elements.forEach((element) => setShieldState(element, enabled));
+  const elements: HTMLElement[] = [];
+  if (root instanceof HTMLElement && root.dataset.vtopModernPrivacyBound === 'true') {
+    elements.push(root);
+  }
+  elements.push(...root.querySelectorAll<HTMLElement>('[data-vtop-modern-privacy-bound="true"]'));
+  elements.forEach((element) => {
+    if (enabled) {
+      bindShield(element, true);
+      setShieldState(element, true);
+    } else unbindShield(element);
+  });
 }
 
 const STYLE = `
@@ -111,6 +157,7 @@ export function createPrivacyDock(
   const makeButton = (label: string, title: string, action: () => void): HTMLButtonElement => {
     const button = document.createElement('button');
     button.type = 'button';
+    button.setAttribute('aria-label', title);
     button.textContent = label;
     button.title = title;
     button.style.cssText =

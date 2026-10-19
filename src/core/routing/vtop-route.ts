@@ -7,11 +7,11 @@ export const VTOP_HOSTS = [
 ] as const;
 
 export const VTOP_MATCH_PATTERNS = [
-  '*://vtopcc.vit.ac.in/*',
-  '*://vtop.vit.ac.in/*',
-  '*://vtop2.vit.ac.in/*',
-  '*://vtopbhopal.vit.ac.in/*',
-  '*://vtop.vitap.ac.in/*',
+  'https://vtopcc.vit.ac.in/*',
+  'https://vtop.vit.ac.in/*',
+  'https://vtop2.vit.ac.in/*',
+  'https://vtopbhopal.vit.ac.in/*',
+  'https://vtop.vitap.ac.in/*',
 ] as const;
 
 export type VtopPage = 'prelogin' | 'login' | 'attendance' | 'timetable' | 'marks' | 'unknown';

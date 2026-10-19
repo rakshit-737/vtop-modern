@@ -1,5 +1,6 @@
 import { defineConfig } from 'wxt';
 import { VTOP_MATCH_PATTERNS } from './src/core/routing/vtop-route';
+import packageJson from './package.json';
 
 export default defineConfig({
   manifestVersion: 3,
@@ -7,7 +8,7 @@ export default defineConfig({
   manifest: {
     name: 'VTOP Modern - Academic Companion',
     short_name: 'VTOP Modern',
-    version: '2.0.0',
+    version: packageJson.version,
     description:
       'A local-only VTOP companion with typed attendance planning, best-effort privacy shielding, and keyboard navigation.',
     permissions: ['storage', 'tabs'],

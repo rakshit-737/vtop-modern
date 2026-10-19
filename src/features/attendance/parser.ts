@@ -63,7 +63,7 @@ export function parseAttendanceTable(table: HTMLTableElement): ParsedAttendanceT
   );
 
   allRows.forEach((row, index) => {
-    if (row === headerRow || row.closest('thead') || row.querySelector('th')) return;
+    if (row === headerRow || row.closest('thead')) return;
     if (row.closest('table') !== table) return;
     const cells = [...row.children].filter(
       (cell): cell is HTMLTableCellElement => cell instanceof HTMLTableCellElement,

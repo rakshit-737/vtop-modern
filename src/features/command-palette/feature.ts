@@ -36,16 +36,34 @@ function normalizedText(value: string): string {
   return value.replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
-function findNavigationTarget(terms: readonly string[]): HTMLElement | null {
-  const candidates = [...document.querySelectorAll('a, button')];
+function isHidden(element: HTMLElement): boolean {
+  for (let current: HTMLElement | null = element; current; current = current.parentElement) {
+    if (current.hasAttribute('hidden') || current.getAttribute('aria-hidden') === 'true')
+      return true;
+    const style = window.getComputedStyle(current);
+    if (style.display === 'none' || style.visibility === 'hidden') return true;
+  }
+  return false;
+}
+
+function findNavigationTarget(terms: readonly string[]): HTMLAnchorElement | null {
+  const candidates = [...document.querySelectorAll('a')];
   return candidates.find((candidate) => {
-    if (candidate.hasAttribute('hidden') || candidate.getAttribute('aria-hidden') === 'true')
-      return false;
-    const style = window.getComputedStyle(candidate);
-    if (style.display === 'none' || style.visibility === 'hidden') return false;
+    if (isHidden(candidate) || candidate.hasAttribute('download')) return false;
     const text = normalizedText(candidate.textContent ?? '');
-    return terms.some((term) => text === term || text.includes(term));
-  }) as HTMLElement | null;
+    if (!terms.some((term) => text === term || text.includes(term))) return false;
+    try {
+      const url = new URL(candidate.href, document.baseURI);
+      if (url.origin !== window.location.origin) return false;
+      const destination = normalizedText(`${url.pathname} ${url.search} ${url.hash}`);
+      return terms.some((term) => {
+        const normalizedTerm = normalizedText(term).replace(/\s+/g, '');
+        return destination.replace(/\s+/g, '').includes(normalizedTerm);
+      });
+    } catch {
+      return false;
+    }
+  }) as HTMLAnchorElement | null;
 }
 
 export interface CommandPaletteOptions {
