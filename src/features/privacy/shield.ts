@@ -149,7 +149,7 @@ export function createPrivacyDock(
   const shadow = mount.shadowRoot as ShadowRoot;
   addStyles(shadow, STYLE);
   const host = document.createElement('div');
-  let currentEnabled = enabled;
+  mount.dataset.vtopModernPrivacyEnabled = String(enabled);
   host.setAttribute('role', 'toolbar');
   host.setAttribute('aria-label', 'VTOP Modern tools');
   host.style.cssText =
@@ -168,8 +168,9 @@ export function createPrivacyDock(
   host.append(
     makeButton('⌘K', 'Open command palette', onPalette),
     makeButton(enabled ? 'Hide' : 'Show', 'Toggle on-screen academic privacy shield', () => {
-      currentEnabled = !currentEnabled;
-      onToggle(currentEnabled);
+      const nextEnabled = mount.dataset.vtopModernPrivacyEnabled !== 'true';
+      mount.dataset.vtopModernPrivacyEnabled = String(nextEnabled);
+      onToggle(nextEnabled);
     }),
     makeButton('◐', 'Toggle theme', onTheme),
   );
@@ -178,6 +179,7 @@ export function createPrivacyDock(
 }
 
 export function updatePrivacyDock(mount: HTMLElement, enabled: boolean): void {
+  mount.dataset.vtopModernPrivacyEnabled = String(enabled);
   const button = mount.shadowRoot?.querySelectorAll('button')[1];
   if (button) button.textContent = enabled ? 'Hide' : 'Show';
 }

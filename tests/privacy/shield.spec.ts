@@ -1,6 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { shieldAcademicValues, updatePrivacyShield } from '../../src/features/privacy/shield';
+import {
+  createPrivacyDock,
+  shieldAcademicValues,
+  updatePrivacyDock,
+  updatePrivacyShield,
+} from '../../src/features/privacy/shield';
 
 describe('privacy shield', () => {
   it('targets labeled metrics and sensitive table columns', () => {
@@ -57,5 +62,15 @@ describe('privacy shield', () => {
     expect(value.getAttribute('role')).toBeNull();
     value.click();
     expect(value.classList.contains('vtop-privacy-shielded')).toBe(false);
+  });
+
+  it('uses the latest external setting when the dock is toggled', () => {
+    const onToggle = vi.fn();
+    const mount = createPrivacyDock(true, onToggle, vi.fn(), vi.fn());
+    document.body.append(mount);
+    updatePrivacyDock(mount, false);
+    mount.shadowRoot?.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('click'));
+    expect(onToggle).toHaveBeenCalledWith(true);
+    mount.remove();
   });
 });

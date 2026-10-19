@@ -60,8 +60,8 @@ privacy aid, not data protection.
 
 `Ctrl+K` and `Cmd+K` open a Shadow DOM-isolated palette. It ignores editable
 controls, supports search, Arrow Up/Down, Enter, Escape, focus restoration, and
-an empty-result state. Portal navigation runs only when a matching link or
-button is visibly present on the current page; it does not invent destinations.
+an empty-result state. Portal navigation runs only when a matching same-origin
+link is visibly present on the current page; it does not invent destinations.
 
 ### Timetable and login assistance
 
