@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { detectVtopRoute, isSupportedVtopHost } from '../../src/core/routing/vtop-route';
+import {
+  detectVtopRoute,
+  isSupportedVtopHost,
+  VTOP_MATCH_PATTERNS,
+} from '../../src/core/routing/vtop-route';
 
 describe('VTOP route detection', () => {
   it('matches exact configured hosts only', () => {
@@ -27,5 +31,10 @@ describe('VTOP route detection', () => {
       supportedHost: false,
       page: 'unknown',
     });
+  });
+
+  it('only injects on HTTPS portal hosts', () => {
+    expect(VTOP_MATCH_PATTERNS.every((pattern) => pattern.startsWith('https://'))).toBe(true);
+    expect(VTOP_MATCH_PATTERNS).not.toContain('*://vtop.vit.ac.in/*');
   });
 });

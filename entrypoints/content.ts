@@ -68,12 +68,9 @@ export default defineContentScript({
       const route = detectVtopRoute(window.location);
       const roots = event.type === 'initial' || event.roots.length === 0 ? [document] : event.roots;
 
-      if (
-        settings.attendanceCalc &&
-        (route.page === 'attendance' || route.page === 'unknown' || event.type === 'initial')
-      ) {
+      if (settings.attendanceCalc && (route.page === 'attendance' || route.page === 'unknown')) {
         enhanceAttendance(event);
-      } else if (!settings.attendanceCalc) {
+      } else {
         clearAttendanceEnhancements(document);
       }
 
@@ -81,12 +78,9 @@ export default defineContentScript({
         for (const root of roots) shieldAcademicValues(root, true);
       }
 
-      if (
-        settings.timetableHighlight &&
-        (route.page === 'timetable' || route.page === 'unknown' || event.type === 'initial')
-      ) {
+      if (settings.timetableHighlight && (route.page === 'timetable' || route.page === 'unknown')) {
         enhanceTimetable(event);
-      } else if (!settings.timetableHighlight) {
+      } else {
         clearTimetableEnhancements(document);
       }
 
@@ -135,6 +129,8 @@ export default defineContentScript({
       updatePrivacyShield(document, stored.privacyShield);
       if (dock) updatePrivacyDock(dock, stored.privacyShield);
       if (previous.attendanceCalc && !stored.attendanceCalc) clearAttendanceEnhancements(document);
+      if (previous.attendanceCalc && !stored.attendanceCalc)
+        void summaryStore.clear(window.location.hostname);
       if (previous.timetableHighlight && !stored.timetableHighlight)
         clearTimetableEnhancements(document);
       if (settingsReady) coordinator.refresh();

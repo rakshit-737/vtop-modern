@@ -63,4 +63,26 @@ describe('command palette keyboard behavior', () => {
     );
     palette.stop();
   });
+
+  it('never activates external links or arbitrary page buttons', () => {
+    const action = vi.fn();
+    document.body.innerHTML =
+      '<button id="danger">Delete marks</button><a id="external" href="https://evil.example/marks">Marks</a>';
+    const danger = document.querySelector('#danger') as HTMLButtonElement;
+    const external = document.querySelector('#external') as HTMLAnchorElement;
+    danger.addEventListener('click', action);
+    external.addEventListener('click', action);
+    const palette = new CommandPalette({ togglePrivacy: vi.fn(), toggleTheme: vi.fn() });
+    palette.start();
+    palette.open();
+    const input = document
+      .querySelector('vtop-command-palette')
+      ?.shadowRoot?.querySelector('input') as HTMLInputElement;
+    input.value = 'marks';
+    input.dispatchEvent(new Event('input'));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(action).not.toHaveBeenCalled();
+    expect((document.querySelector('vtop-command-palette') as HTMLElement).hidden).toBe(false);
+    palette.stop();
+  });
 });

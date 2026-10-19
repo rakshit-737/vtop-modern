@@ -14,6 +14,7 @@ const summaryStore = createSummaryStore();
 function PopupApp() {
   const [settings, setSettings] = useState<ExtensionSettings | null>(null);
   const [summary, setSummary] = useState<AttendanceSummary | null>(null);
+  const [hostname, setHostname] = useState<string | null>(null);
 
   useEffect(() => {
     void settingsStore.get().then((value) => {
@@ -27,19 +28,28 @@ function PopupApp() {
         if (!url) return null;
         try {
           const hostname = new URL(url).hostname;
-          return isSupportedVtopHost(hostname) ? summaryStore.get(hostname) : null;
+          return isSupportedVtopHost(hostname) ? hostname : null;
         } catch {
           return null;
         }
       })
-      .then((value) => {
-        if (value) setSummary(value);
-      });
+      .then(setHostname)
+      .catch(() => setHostname(null));
     return settingsStore.subscribe((value) => {
       setSettings(value);
       applyPopupTheme(value.theme);
     });
   }, []);
+
+  useEffect(() => {
+    setSummary(null);
+    if (!hostname) return;
+    const syncSummary = (): void => {
+      void summaryStore.get(hostname).then(setSummary);
+    };
+    syncSummary();
+    return summaryStore.subscribe(hostname, setSummary);
+  }, [hostname]);
 
   if (!settings) return <div className="loading">Loading preferences…</div>;
 
@@ -173,6 +183,7 @@ function Preference({
         type="button"
         role="switch"
         aria-checked={checked}
+        aria-label={label}
         className="switch"
         onClick={() => onChange(!checked)}
       >

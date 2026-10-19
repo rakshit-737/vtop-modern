@@ -20,10 +20,12 @@ export interface SummaryStore {
   get(hostname: string): Promise<AttendanceSummary | null>;
   set(summary: AttendanceSummary, hostname: string): Promise<void>;
   clear(hostname: string): Promise<void>;
+  subscribe(hostname: string, listener: (summary: AttendanceSummary | null) => void): () => void;
 }
 
 export function createSettingsStore(): SettingsStore {
   const listeners = new Set<(settings: ExtensionSettings) => void>();
+  let writeQueue: Promise<void> = Promise.resolve();
 
   const get = async (): Promise<ExtensionSettings> => {
     try {
@@ -40,15 +42,22 @@ export function createSettingsStore(): SettingsStore {
     }
   };
 
-  const set = async (patch: Partial<ExtensionSettings>): Promise<ExtensionSettings> => {
-    const next = normalizeSettings({ ...(await get()), ...patch });
-    try {
-      await browser.storage.sync.set(next);
-    } catch {
-      // The UI remains usable when a browser profile temporarily rejects storage.
-    }
-    for (const listener of listeners) listener(next);
-    return next;
+  const set = (patch: Partial<ExtensionSettings>): Promise<ExtensionSettings> => {
+    const operation = writeQueue.then(async () => {
+      const next = normalizeSettings({ ...(await get()), ...patch });
+      try {
+        await browser.storage.sync.set(next);
+      } catch {
+        // The UI remains usable when a browser profile temporarily rejects storage.
+      }
+      for (const listener of listeners) listener(next);
+      return next;
+    });
+    writeQueue = operation.then(
+      () => undefined,
+      () => undefined,
+    );
+    return operation;
   };
 
   const onChanged = (changes: Record<string, { newValue?: unknown }>, areaName: string): void => {
@@ -98,6 +107,18 @@ export function createSummaryStore(): SummaryStore {
       } catch {
         // Clearing stale summaries is best effort and never blocks the portal.
       }
+    },
+    subscribe(hostname, listener) {
+      const key = summaryKey(hostname);
+      const onChanged = (
+        changes: Record<string, { newValue?: unknown }>,
+        areaName: string,
+      ): void => {
+        if (areaName !== 'local' || !(key in changes)) return;
+        void this.get(hostname).then(listener);
+      };
+      browser.storage.onChanged.addListener(onChanged);
+      return () => browser.storage.onChanged.removeListener(onChanged);
     },
   };
 }

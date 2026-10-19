@@ -30,4 +30,13 @@ describe('attendance table parser', () => {
     expect(result?.rows[0]?.conducted).toBe(2048);
     expect(result?.rows[1]?.metrics.valid).toBe(false);
   });
+
+  it('accepts accessible row headers in data rows', () => {
+    document.body.innerHTML = `
+      <table><thead><tr><th>Course</th><th>Attended</th><th>Conducted</th></tr></thead>
+      <tbody><tr><th scope="row">MAT101</th><td>15</td><td>20</td></tr></tbody></table>`;
+    const result = parseAttendanceTable(document.querySelector('table') as HTMLTableElement);
+    expect(result?.rows).toHaveLength(1);
+    expect(result?.rows[0]).toMatchObject({ attended: 15, conducted: 20 });
+  });
 });

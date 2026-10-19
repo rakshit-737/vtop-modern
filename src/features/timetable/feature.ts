@@ -49,6 +49,17 @@ function createTimetableCard(
   return mount;
 }
 
+function removeOrphanTimetableCards(): void {
+  const sourceIds = new Set(
+    [...document.querySelectorAll<HTMLTableElement>('table[data-vtop-modern-timetable-id]')].map(
+      (table) => table.dataset.vtopModernTimetableId,
+    ),
+  );
+  document.querySelectorAll<HTMLElement>('.vtop-modern-timetable').forEach((card) => {
+    if (!sourceIds.has(card.dataset.vtopModernTimetableFor)) card.remove();
+  });
+}
+
 export function enhanceTimetable(event: LifecycleEvent): void {
   const roots = event.type === 'initial' ? [document] : event.roots;
   const tables = new Set<HTMLTableElement>();
@@ -85,6 +96,7 @@ export function enhanceTimetable(event: LifecycleEvent): void {
       else parent.insertBefore(card, table);
     }
   }
+  removeOrphanTimetableCards();
 }
 
 function removeTimetableEnhancement(table: HTMLTableElement): void {

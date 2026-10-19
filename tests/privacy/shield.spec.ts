@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { shieldAcademicValues, updatePrivacyShield } from '../../src/features/privacy/shield';
 
@@ -38,5 +38,24 @@ describe('privacy shield', () => {
     updatePrivacyShield(document, true);
     expect(value.classList.contains('vtop-privacy-shielded')).toBe(true);
     expect(value.classList.contains('revealed')).toBe(false);
+  });
+
+  it('does not add interaction or block clicks while disabled', () => {
+    document.body.innerHTML = '<a href="#next"><span id="gpa">GPA: 8.8</span></a>';
+    const link = document.querySelector('a') as HTMLAnchorElement;
+    const navigate = vi.fn();
+    link.addEventListener('click', navigate);
+    shieldAcademicValues(document, false);
+    const value = document.querySelector('#gpa') as HTMLElement;
+    expect(value.dataset.vtopModernPrivacyBound).toBeUndefined();
+    expect(value.getAttribute('role')).toBeNull();
+    value.click();
+    expect(navigate).toHaveBeenCalledOnce();
+
+    shieldAcademicValues(document, true);
+    updatePrivacyShield(document, false);
+    expect(value.getAttribute('role')).toBeNull();
+    value.click();
+    expect(value.classList.contains('vtop-privacy-shielded')).toBe(false);
   });
 });

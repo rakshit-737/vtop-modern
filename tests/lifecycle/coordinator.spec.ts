@@ -19,4 +19,17 @@ describe('lifecycle coordinator', () => {
     coordinator.stop();
     expect(coordinator.getDiagnostics().observerCount).toBe(0);
   });
+
+  it('refreshes subscribers when history navigation changes the route', async () => {
+    const coordinator = new LifecycleCoordinator(document.documentElement);
+    const parse = vi.fn();
+    coordinator.subscribe('parse', parse);
+    coordinator.start();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const initialCount = parse.mock.calls.length;
+    window.history.pushState({}, '', '/attendance');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(parse.mock.calls.length).toBe(initialCount + 1);
+    coordinator.stop();
+  });
 });

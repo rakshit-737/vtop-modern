@@ -9,6 +9,8 @@ const QUOTA_CELL = 'vtop-modern-quota-cell';
 const SUMMARY_MOUNT = 'vtop-modern-attendance-summary';
 const summaryStore = createSummaryStore();
 let tableId = 0;
+let lastStoredSummaryKey = '';
+let lastStoredSummaryHost = '';
 
 function getTableId(table: HTMLTableElement): string {
   return (table.dataset.vtopModernAttendanceId ??= `attendance-${++tableId}`);
@@ -27,7 +29,32 @@ function summaryKey(summary: ReturnType<typeof buildAttendanceSummary>): string 
     : '';
 }
 
-function addQuota(tableData: ParsedAttendanceTable): void {
+function removeAttendanceSummary(table: HTMLTableElement): void {
+  const sourceId = table.dataset.vtopModernAttendanceId;
+  const parent = table.parentElement;
+  if (!sourceId || !parent) return;
+  [...parent.children]
+    .filter(
+      (child): child is HTMLElement =>
+        child instanceof HTMLElement &&
+        child.classList.contains(SUMMARY_MOUNT) &&
+        child.dataset.vtopModernAttendanceFor === sourceId,
+    )
+    .forEach((summary) => summary.remove());
+}
+
+function removeOrphanAttendanceSummaries(): void {
+  const sourceIds = new Set(
+    [...document.querySelectorAll<HTMLTableElement>('table[data-vtop-modern-attendance-id]')].map(
+      (table) => table.dataset.vtopModernAttendanceId,
+    ),
+  );
+  document.querySelectorAll<HTMLElement>(`.${SUMMARY_MOUNT}`).forEach((summary) => {
+    if (!sourceIds.has(summary.dataset.vtopModernAttendanceFor)) summary.remove();
+  });
+}
+
+function addQuota(tableData: ParsedAttendanceTable): ReturnType<typeof buildAttendanceSummary> {
   const { table, headerRow, rows } = tableData;
   const sourceId = getTableId(table);
   let header = headerRow.querySelector<HTMLTableCellElement>(`[data-vtop-modern-column="quota"]`);
@@ -61,11 +88,11 @@ function addQuota(tableData: ParsedAttendanceTable): void {
     .filter((metric): metric is AttendanceMetrics => metric.valid);
   const summary = buildAttendanceSummary(metrics, tableData.unit);
   if (!summary) {
-    removeAttendanceEnhancement(table);
-    return;
+    removeAttendanceSummary(table);
+    return null;
   }
   const parent = table.parentElement;
-  if (!parent) return;
+  if (!parent) return summary;
   const previous = [...parent.children].find(
     (child): child is HTMLElement =>
       child instanceof HTMLElement &&
@@ -79,8 +106,8 @@ function addQuota(tableData: ParsedAttendanceTable): void {
     next.dataset.vtopModernAttendanceFor = sourceId;
     if (previous) previous.replaceWith(next);
     else parent.insertBefore(next, table);
-    void summaryStore.set(summary, window.location.hostname);
   }
+  return summary;
 }
 
 function removeAttendanceEnhancement(table: HTMLTableElement): void {
@@ -111,17 +138,45 @@ export function clearAttendanceEnhancements(root: ParentNode = document): void {
 
 export function enhanceAttendance(event: LifecycleEvent): void {
   const roots = event.type === 'initial' ? [document] : event.roots;
-  const tables = new Set<HTMLTableElement>();
+  const affectedTables = new Set<HTMLTableElement>();
   for (const root of roots) {
-    for (const table of findAttendanceTables(root)) tables.add(table);
+    for (const table of findAttendanceTables(root)) affectedTables.add(table);
     if (root instanceof Element) {
       const table = root.closest('table');
-      if (table instanceof HTMLTableElement) tables.add(table);
+      if (table instanceof HTMLTableElement) affectedTables.add(table);
     }
   }
+  const tables = new Set([...findAttendanceTables(document), ...affectedTables]);
+  const parsedTables: Array<{ table: HTMLTableElement; summary: ReturnType<typeof addQuota> }> = [];
   for (const table of tables) {
     const parsed = parseAttendanceTable(table);
-    if (parsed) addQuota(parsed);
+    if (parsed) parsedTables.push({ table, summary: addQuota(parsed) });
     else removeAttendanceEnhancement(table);
   }
+
+  const validTables = parsedTables.filter(
+    (
+      item,
+    ): item is { table: HTMLTableElement; summary: NonNullable<ReturnType<typeof addQuota>> } =>
+      item.summary !== null,
+  );
+  const active =
+    validTables.find(({ table }) => {
+      if (table.hidden || table.getAttribute('aria-hidden') === 'true') return false;
+      const style = window.getComputedStyle(table);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    }) ?? validTables[0];
+  const hostname = window.location.hostname;
+  if (active) {
+    const key = summaryKey(active.summary);
+    if (lastStoredSummaryHost !== hostname || lastStoredSummaryKey !== key) {
+      lastStoredSummaryHost = hostname;
+      lastStoredSummaryKey = key;
+      void summaryStore.set(active.summary, hostname);
+    }
+  } else if (parsedTables.length > 0) {
+    if (lastStoredSummaryHost === hostname) lastStoredSummaryKey = '';
+    void summaryStore.clear(hostname);
+  }
+  removeOrphanAttendanceSummaries();
 }

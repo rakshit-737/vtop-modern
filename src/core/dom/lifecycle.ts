@@ -42,6 +42,8 @@ export class LifecycleCoordinator {
   private visualQueued = false;
   private pendingRecords: MutationRecord[] = [];
   private pendingRoots = new Set<Element>();
+  private originalPushState: History['pushState'] | null = null;
+  private originalReplaceState: History['replaceState'] | null = null;
   private readonly diagnostics: LifecycleDiagnostics = {
     observerCount: 0,
     scanCount: 0,
@@ -55,6 +57,7 @@ export class LifecycleCoordinator {
 
   start(): void {
     if (this.observer) return;
+    this.installNavigationHooks();
     this.observer = new MutationObserver((records) => this.enqueue(records));
     this.observer.observe(this.root, {
       childList: true,
@@ -69,6 +72,7 @@ export class LifecycleCoordinator {
   stop(): void {
     this.observer?.disconnect();
     this.observer = null;
+    this.removeNavigationHooks();
     this.diagnostics.observerCount = 0;
     this.pendingRecords = [];
     this.pendingRoots.clear();
@@ -123,6 +127,38 @@ export class LifecycleCoordinator {
         this.dispatch('visual');
       });
     }
+  }
+
+  private readonly handleNavigation = (): void => {
+    this.enqueue([]);
+  };
+
+  private installNavigationHooks(): void {
+    window.addEventListener('popstate', this.handleNavigation);
+    window.addEventListener('hashchange', this.handleNavigation);
+    this.originalPushState = window.history.pushState;
+    this.originalReplaceState = window.history.replaceState;
+    const pushState = this.originalPushState.bind(window.history);
+    const replaceState = this.originalReplaceState.bind(window.history);
+    window.history.pushState = ((data: unknown, unused: string, url?: string | URL | null) => {
+      const result = pushState(data, unused, url);
+      this.handleNavigation();
+      return result;
+    }) as History['pushState'];
+    window.history.replaceState = ((data: unknown, unused: string, url?: string | URL | null) => {
+      const result = replaceState(data, unused, url);
+      this.handleNavigation();
+      return result;
+    }) as History['replaceState'];
+  }
+
+  private removeNavigationHooks(): void {
+    window.removeEventListener('popstate', this.handleNavigation);
+    window.removeEventListener('hashchange', this.handleNavigation);
+    if (this.originalPushState) window.history.pushState = this.originalPushState;
+    if (this.originalReplaceState) window.history.replaceState = this.originalReplaceState;
+    this.originalPushState = null;
+    this.originalReplaceState = null;
   }
 
   private dispatch(phase: LifecyclePhase): void {
