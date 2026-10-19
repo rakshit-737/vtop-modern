@@ -204,8 +204,8 @@ node APIs, not interpolated into HTML.
 
 ## Privacy and permissions
 
-The generated manifest requests `storage` and `tabs`, plus host access for the
-five configured VTOP domains. `tabs` is used only by the popup to select the
+The generated manifest requests `storage` and `activeTab`, plus host access for the
+five configured VTOP domains. `activeTab` is used only by the popup to select the
 summary for the active configured VTOP host. There is no background service,
 remote font import, telemetry, analytics, academic-data fetch, or
 web-accessible resource. Popup quick links navigate only after an explicit user

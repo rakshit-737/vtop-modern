@@ -11,7 +11,7 @@ export default defineConfig({
     version: packageJson.version,
     description:
       'A local-only VTOP companion with typed attendance planning, best-effort privacy shielding, and keyboard navigation.',
-    permissions: ['storage', 'tabs'],
+    permissions: ['storage', 'activeTab'],
     host_permissions: [...VTOP_MATCH_PATTERNS],
     browser_specific_settings: {
       gecko: {

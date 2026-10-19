@@ -6,6 +6,21 @@ This audit is based on the tracked source and local fixtures. No authenticated
 VTOP session was available, so portal selectors, navigation destinations, and
 runtime behavior against live VTOP remain unverified.
 
+## Current status
+
+The migration described by this historical audit is now implemented in the
+typed WXT source. The repository has a pinned Node/npm toolchain, lockfile,
+Dockerfile, unified validation command, Chromium and Firefox MV3 builds, and
+sanitized Vitest coverage. The findings below document the pre-migration
+baseline and should not be read as a statement that the old JavaScript files
+still exist.
+
+Remaining release work is live smoke testing on each configured VTOP campus:
+confirm the real attendance/timetable markup, navigation links, login selectors,
+dynamic table replacement, and Chrome/Firefox popup behavior with a student
+account. The privacy shield remains visual, best-effort concealment rather than
+a confidentiality boundary.
+
 ## Baseline
 
 - Repository is a clean Manifest V3 extension with no package manager,

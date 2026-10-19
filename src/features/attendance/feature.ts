@@ -136,6 +136,8 @@ function removeAttendanceEnhancement(table: HTMLTableElement): void {
 }
 
 export function clearAttendanceEnhancements(root: ParentNode = document): void {
+  lastStoredSummaryKey = '';
+  lastStoredSummaryHost = '';
   const tables = findAttendanceTables(root);
   for (const table of tables) removeAttendanceEnhancement(table);
   if (root === document) {
