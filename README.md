@@ -113,6 +113,9 @@ npm run package               # clean, validate, and create Chrome + Firefox ZIP
 fixtures. `npm ci` and the first dependency installation require the package
 registry unless the npm cache is already populated.
 
+GitHub Actions runs `npm run package` for pushes to `main` and pull requests.
+Successful runs publish the Chrome and Firefox ZIPs as workflow artifacts.
+
 ## Reproducible Docker check
 
 The Dockerfile pins the Node major line and runs the full validation flow:
