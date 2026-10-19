@@ -61,4 +61,18 @@ describe('attendance enhancement lifecycle', () => {
     const summary = stored ? Object.values(stored)[0] : undefined;
     expect(summary).toMatchObject({ attended: 9, conducted: 10 });
   });
+
+  it('clears a summary when the recognized source table is removed', () => {
+    document.body.innerHTML =
+      '<table><tr><th>Course</th><th>Attended</th><th>Conducted</th></tr><tr><td>A</td><td>8</td><td>10</td></tr></table>';
+    enhanceAttendance(lifecycle());
+    const table = document.querySelector('table') as HTMLTableElement;
+    table.remove();
+    enhanceAttendance({
+      type: 'mutation',
+      roots: [document.body],
+      records: [{ removedNodes: [table] } as unknown as MutationRecord],
+    });
+    expect(browserMock.storage.local.remove).toHaveBeenCalled();
+  });
 });

@@ -63,6 +63,20 @@ function isVisible(table: HTMLTableElement): boolean {
   return true;
 }
 
+function removedAttendanceTable(records: readonly MutationRecord[]): boolean {
+  return records.some((record) =>
+    [...record.removedNodes].some((node) => {
+      const table =
+        node instanceof HTMLTableElement
+          ? node
+          : node instanceof Element
+            ? node.querySelector<HTMLTableElement>('table')
+            : null;
+      return table instanceof HTMLTableElement && parseAttendanceTable(table) !== null;
+    }),
+  );
+}
+
 function addQuota(tableData: ParsedAttendanceTable): ReturnType<typeof buildAttendanceSummary> {
   const { table, headerRow, rows } = tableData;
   const sourceId = getTableId(table);
@@ -149,6 +163,8 @@ export function clearAttendanceEnhancements(root: ParentNode = document): void {
 
 export function enhanceAttendance(event: LifecycleEvent): void {
   const roots = event.type === 'initial' ? [document] : event.roots;
+  const hadRemovedAttendanceTable =
+    event.type === 'mutation' && removedAttendanceTable(event.records);
   const affectedTables = new Set<HTMLTableElement>();
   for (const root of roots) {
     for (const table of findAttendanceTables(root)) affectedTables.add(table);
@@ -180,7 +196,7 @@ export function enhanceAttendance(event: LifecycleEvent): void {
       lastStoredSummaryKey = key;
       void summaryStore.set(active.summary, hostname);
     }
-  } else if (parsedTables.length > 0) {
+  } else if (parsedTables.length > 0 || hadRemovedAttendanceTable) {
     if (lastStoredSummaryHost === hostname) lastStoredSummaryKey = '';
     void summaryStore.clear(hostname);
   }
