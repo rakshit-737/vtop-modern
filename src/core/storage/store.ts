@@ -26,6 +26,23 @@ export interface SummaryStore {
 export function createSettingsStore(): SettingsStore {
   const listeners = new Set<(settings: ExtensionSettings) => void>();
   let writeQueue: Promise<void> = Promise.resolve();
+  let lastNotifiedKey: string | null = null;
+
+  const settingsKey = (settings: ExtensionSettings): string =>
+    [
+      settings.theme,
+      settings.attendanceCalc,
+      settings.privacyShield,
+      settings.autoFocus,
+      settings.timetableHighlight,
+    ].join('|');
+
+  const notify = (settings: ExtensionSettings): void => {
+    const key = settingsKey(settings);
+    if (key === lastNotifiedKey) return;
+    lastNotifiedKey = key;
+    for (const listener of listeners) listener(settings);
+  };
 
   const get = async (): Promise<ExtensionSettings> => {
     try {
@@ -50,7 +67,7 @@ export function createSettingsStore(): SettingsStore {
       } catch {
         // The UI remains usable when a browser profile temporarily rejects storage.
       }
-      for (const listener of listeners) listener(next);
+      notify(next);
       return next;
     });
     writeQueue = operation.then(
@@ -65,7 +82,7 @@ export function createSettingsStore(): SettingsStore {
     const relevant = [...Object.keys(DEFAULT_SETTINGS), 'cgpaBlur'].some((key) => key in changes);
     if (!relevant) return;
     void get().then((settings) => {
-      for (const listener of listeners) listener(settings);
+      notify(settings);
     });
   };
 

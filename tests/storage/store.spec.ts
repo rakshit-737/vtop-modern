@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { storageMock, syncValues } = vi.hoisted(() => {
+const { emit, storageMock, syncValues } = vi.hoisted(() => {
   const syncValues: Record<string, unknown> = {};
   const localValues: Record<string, unknown> = {};
   const listeners = new Set<
@@ -47,7 +47,7 @@ const { storageMock, syncValues } = vi.hoisted(() => {
       ) => listeners.delete(listener),
     },
   };
-  return { storageMock, syncValues };
+  return { emit, storageMock, syncValues };
 });
 
 vi.mock('wxt/browser', () => ({ browser: { storage: storageMock } }));
@@ -82,5 +82,26 @@ describe('settings storage', () => {
     releaseFirst?.();
     await Promise.all([first, second]);
     expect(syncValues).toMatchObject({ privacyShield: false, autoFocus: false });
+  });
+
+  it('does not notify twice when a sync write also emits a storage event', async () => {
+    storageMock.sync.set.mockImplementation(async (values: Record<string, unknown>) => {
+      Object.assign(syncValues, values);
+      emit(
+        Object.fromEntries(
+          Object.entries(values).map(([key, value]) => [key, { newValue: value }]),
+        ),
+        'sync',
+      );
+    });
+
+    const store = createSettingsStore();
+    const listener = vi.fn();
+    store.subscribe(listener);
+    await store.set({ privacyShield: false });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(listener).toHaveBeenCalledOnce();
+    expect(listener).toHaveBeenLastCalledWith(expect.objectContaining({ privacyShield: false }));
   });
 });
