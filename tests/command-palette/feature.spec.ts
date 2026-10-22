@@ -38,6 +38,28 @@ describe('command palette keyboard behavior', () => {
     palette.stop();
   });
 
+  it('restores focus to the original control inside nested shadow roots', () => {
+    const outer = document.createElement('div');
+    const outerShadow = outer.attachShadow({ mode: 'open' });
+    const inner = document.createElement('div');
+    const innerShadow = inner.attachShadow({ mode: 'open' });
+    const trigger = document.createElement('button');
+    trigger.textContent = 'Open palette';
+    innerShadow.append(trigger);
+    outerShadow.append(inner);
+    document.body.append(outer);
+    trigger.focus();
+
+    const palette = new CommandPalette({ togglePrivacy: vi.fn(), toggleTheme: vi.fn() });
+    palette.start();
+    palette.open();
+    palette.close();
+
+    expect(outerShadow.activeElement).toBe(inner);
+    expect(innerShadow.activeElement).toBe(trigger);
+    palette.stop();
+  });
+
   it('handles empty results and ignores shortcuts in editable controls', () => {
     const palette = new CommandPalette({ togglePrivacy: vi.fn(), toggleTheme: vi.fn() });
     palette.start();

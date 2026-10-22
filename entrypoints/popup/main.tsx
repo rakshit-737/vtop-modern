@@ -57,6 +57,7 @@ function PopupApp() {
     void settingsStore.set(value).then(setSettings);
   };
   const nextTheme = toggleTheme(settings.theme);
+  const themeLabel = nextTheme === 'light' ? 'Switch to light theme' : 'Switch to dark theme';
 
   return (
     <div className="shell">
@@ -72,15 +73,21 @@ function PopupApp() {
           className="icon-button"
           type="button"
           onClick={() => patch({ theme: nextTheme })}
-          aria-label="Toggle theme"
+          aria-label={themeLabel}
+          title={themeLabel}
         >
-          {settings.theme === 'light' ? '☾' : '☼'}
+          {nextTheme === 'light' ? '☾' : '☼'}
         </button>
       </header>
 
       <section className="section" aria-labelledby="standing-title">
         <p className="eyebrow" id="standing-title">
           Academic standing
+        </p>
+        <p className="context">
+          {hostname
+            ? `Current portal · ${hostname}`
+            : 'Open a supported VTOP tab to view local data.'}
         </p>
         {summary ? <Summary summary={summary} /> : <EmptySummary />}
       </section>
@@ -174,22 +181,22 @@ function Preference({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <div className="preference">
+    <button
+      className="preference"
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={() => onChange(!checked)}
+    >
       <div>
         <strong>{label}</strong>
         <span>{description}</span>
       </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        aria-label={label}
-        className="switch"
-        onClick={() => onChange(!checked)}
-      >
+      <span className="switch" aria-hidden="true">
         <span />
-      </button>
-    </div>
+      </span>
+    </button>
   );
 }
 

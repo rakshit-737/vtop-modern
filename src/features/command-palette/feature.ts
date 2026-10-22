@@ -46,6 +46,12 @@ function isHidden(element: HTMLElement): boolean {
   return false;
 }
 
+function deepestActiveElement(root: Document | ShadowRoot = document): Element | null {
+  const active = root.activeElement;
+  if (!(active instanceof HTMLElement) || !active.shadowRoot) return active;
+  return deepestActiveElement(active.shadowRoot) ?? active;
+}
+
 function findNavigationTarget(terms: readonly string[]): HTMLAnchorElement | null {
   const candidates = [...document.querySelectorAll('a')];
   return candidates.find((candidate) => {
@@ -78,7 +84,7 @@ export class CommandPalette {
   private modal: HTMLElement | null = null;
   private activeIndex = 0;
   private filtered: PaletteCommand[] = [];
-  private previousFocus: Element | null = null;
+  private previousFocus: HTMLElement | null = null;
   private status: HTMLElement | null = null;
 
   constructor(private readonly options: CommandPaletteOptions) {}
@@ -100,7 +106,8 @@ export class CommandPalette {
   open(): void {
     if (!this.mount) this.create();
     if (!this.mount || !this.input) return;
-    this.previousFocus = document.activeElement;
+    const active = deepestActiveElement();
+    this.previousFocus = active instanceof HTMLElement ? active : null;
     this.mount.hidden = false;
     const overlay = this.mount.shadowRoot?.querySelector<HTMLElement>('.overlay');
     if (overlay) overlay.hidden = false;
@@ -114,7 +121,7 @@ export class CommandPalette {
     this.mount.hidden = true;
     const overlay = this.mount.shadowRoot?.querySelector<HTMLElement>('.overlay');
     if (overlay) overlay.hidden = true;
-    if (this.previousFocus instanceof HTMLElement) this.previousFocus.focus();
+    if (this.previousFocus?.isConnected) this.previousFocus.focus();
   }
 
   private readonly handleGlobalKeydown = (event: KeyboardEvent): void => {

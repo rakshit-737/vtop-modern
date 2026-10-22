@@ -88,6 +88,11 @@ a:focus-visible {
   color: var(--text);
   cursor: pointer;
 }
+.icon-button:hover,
+.icon-button:active {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
 .section {
   display: grid;
   gap: 7px;
@@ -99,6 +104,14 @@ a:focus-visible {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.context {
+  overflow: hidden;
+  margin: -2px 0 1px;
+  color: var(--muted);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .summary-card,
 .empty-card,
@@ -133,10 +146,12 @@ a:focus-visible {
   border-radius: 999px;
   font-size: 10px;
 }
-.status.safe,
+.status.safe {
+  color: var(--good);
+}
 .status.caution,
 .status.on_edge {
-  color: var(--good);
+  color: var(--warn);
 }
 .status.critical {
   color: var(--bad);
@@ -155,7 +170,20 @@ a:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  width: 100%;
   padding: 9px 10px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+}
+.preference:hover,
+.preference:focus-visible {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+.preference:active {
+  transform: translateY(1px);
 }
 .preference > div {
   min-width: 0;
@@ -168,8 +196,8 @@ a:focus-visible {
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface-2);
-  cursor: pointer;
   text-align: left;
+  pointer-events: none;
 }
 .switch span {
   display: block;
